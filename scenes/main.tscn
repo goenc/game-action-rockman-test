@@ -1,3 +1,264 @@
-[gd_scene format=3 uid="uid://btm0w8ili8eyw"]
+[gd_scene load_steps=12 format=3]
 
-[node name="Main" type="Node2D" unique_id=501539262]
+[ext_resource type="Script" path="res://scripts/game/game_manager.gd" id="1_game_manager"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player_scene"]
+[ext_resource type="PackedScene" path="res://scenes/ui/title.tscn" id="3_title_scene"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="4_hud_scene"]
+[ext_resource type="PackedScene" path="res://scenes/ui/clear.tscn" id="5_clear_scene"]
+[ext_resource type="PackedScene" path="res://scenes/tile_block.tscn" id="6_tile"]
+[ext_resource type="PackedScene" path="res://scenes/enemy_walker.tscn" id="7_walker_scene"]
+[ext_resource type="PackedScene" path="res://scenes/enemy_turret.tscn" id="8_turret_scene"]
+[ext_resource type="PackedScene" path="res://scenes/boss.tscn" id="9_boss_scene"]
+[ext_resource type="PackedScene" path="res://scenes/enemy_bullet.tscn" id="10_enemy_bullet_scene"]
+[ext_resource type="Script" path="res://scripts/game/stage_01.gd" id="11_stage"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_game_manager")
+
+[node name="Stage" type="Node2D" parent="."]
+script = ExtResource("11_stage")
+
+[node name="Tiles" type="Node2D" parent="Stage"]
+
+[node name="Tile001" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile002" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile003" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile004" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile005" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile006" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile007" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile008" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile009" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile010" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile011" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile012" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile013" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile014" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile015" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile016" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile017" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile018" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile019" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile020" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile021" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile022" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile023" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile024" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile025" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile026" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile027" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile028" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile029" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile030" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile031" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile032" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile033" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile034" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile035" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile036" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile037" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile038" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile039" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile040" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile041" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile042" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile043" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile044" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile045" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile046" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile047" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile048" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile049" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile050" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile051" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile052" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile053" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile054" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile055" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile056" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile057" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile058" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile059" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile060" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile061" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile062" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile063" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile064" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile065" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile066" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile067" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile068" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile069" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile070" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile071" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile072" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile073" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile074" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile075" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile076" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile077" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile078" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile079" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile080" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile081" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile082" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile083" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile084" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile085" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile086" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile087" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile088" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile089" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile090" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile091" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile092" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile093" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile094" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile095" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile096" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile097" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile098" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile099" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile100" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile101" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+[node name="Tile102" parent="Stage/Tiles" instance=ExtResource("6_tile")]
+visible = false
+
+[node name="Enemies" type="Node2D" parent="Stage"]
+
+[node name="Walkers" type="Node2D" parent="Stage/Enemies"]
+[node name="Walker01" parent="Stage/Enemies/Walkers" instance=ExtResource("7_walker_scene")]
+[node name="Walker02" parent="Stage/Enemies/Walkers" instance=ExtResource("7_walker_scene")]
+[node name="Walker03" parent="Stage/Enemies/Walkers" instance=ExtResource("7_walker_scene")]
+[node name="Walker04" parent="Stage/Enemies/Walkers" instance=ExtResource("7_walker_scene")]
+
+[node name="Turrets" type="Node2D" parent="Stage/Enemies"]
+[node name="Turret01" parent="Stage/Enemies/Turrets" instance=ExtResource("8_turret_scene")]
+[node name="Turret02" parent="Stage/Enemies/Turrets" instance=ExtResource("8_turret_scene")]
+[node name="Turret03" parent="Stage/Enemies/Turrets" instance=ExtResource("8_turret_scene")]
+
+[node name="Boss" parent="Stage/Enemies" instance=ExtResource("9_boss_scene")]
+
+[node name="EnemyBullets" type="Node2D" parent="Stage"]
+[node name="EnemyBullet01" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+[node name="EnemyBullet02" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+[node name="EnemyBullet03" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+[node name="EnemyBullet04" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+[node name="EnemyBullet05" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+[node name="EnemyBullet06" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+[node name="EnemyBullet07" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+[node name="EnemyBullet08" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+[node name="EnemyBullet09" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+[node name="EnemyBullet10" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+[node name="EnemyBullet11" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+[node name="EnemyBullet12" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+[node name="EnemyBullet13" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+[node name="EnemyBullet14" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+[node name="EnemyBullet15" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+[node name="EnemyBullet16" parent="Stage/EnemyBullets" instance=ExtResource("10_enemy_bullet_scene")]
+
+[node name="Player" parent="." instance=ExtResource("2_player_scene")]
+[node name="Title" parent="." instance=ExtResource("3_title_scene")]
+[node name="Hud" parent="." instance=ExtResource("4_hud_scene")]
+[node name="Clear" parent="." instance=ExtResource("5_clear_scene")]

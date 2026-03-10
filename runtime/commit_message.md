@@ -1,3 +1,7 @@
-通常指示追加
+ロックマン風矩形1ステージの通しプレイを実装
 
-・通常指示_game-action-rockman-test.txt を追加
+・矩形描画だけでタイトル画面とゲーム本編とクリア画面の状態遷移と Input Map 初期登録を実装
+・プレイヤー移動とジャンプと単発ショットと被弾と無敵時間と HUD ライフ表示を実装
+・JSON 定義のステージとタイル配置と歩行敵と砲台とボスと敵弾とカメラ追従を実装
+・godot_console --path . --display-driver headless --quit-after 1 で起動確認
+・tools/run.ps1 の起動を短時間確認
