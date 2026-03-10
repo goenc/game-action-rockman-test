@@ -14,7 +14,6 @@ var gameplay_active := false
 var boss_started := false
 var out_of_bounds_reported := false
 
-@onready var tiles_root: Node = $Tiles
 @onready var walkers_root: Node = $Enemies/Walkers
 @onready var turrets_root: Node = $Enemies/Turrets
 @onready var boss = $Enemies/Boss
@@ -29,7 +28,6 @@ func setup(manager, config: Dictionary) -> void:
 	game_manager = manager
 	game_config = config
 	stage_data = _load_json(STAGE_CONFIG_PATH)
-	_configure_tiles()
 	_configure_enemies()
 	_reset_enemy_bullets()
 	boss.defeated.connect(_on_boss_defeated)
@@ -43,7 +41,6 @@ func reset_stage() -> void:
 	stage_data = _load_json(STAGE_CONFIG_PATH)
 	boss_started = false
 	out_of_bounds_reported = false
-	_configure_tiles()
 	_configure_enemies()
 	_reset_enemy_bullets()
 
@@ -111,25 +108,6 @@ func _physics_process(_delta: float) -> void:
 	if !out_of_bounds_reported and player.global_position.y > get_death_y():
 		out_of_bounds_reported = true
 		player_out_of_bounds.emit()
-
-
-func _configure_tiles() -> void:
-	var tile_nodes := tiles_root.get_children()
-	var tiles: Array = stage_data.get("tiles", [])
-	var tile_size := int(game_config.get("tile_size", 32))
-	for index in range(tile_nodes.size()):
-		var tile: StaticBody2D = tile_nodes[index]
-		var collider: CollisionShape2D = tile.get_node("CollisionShape2D")
-		var enabled := index < tiles.size()
-		tile.visible = enabled
-		collider.disabled = !enabled
-		tile.set_collision_layer_value(1, enabled)
-		tile.set_collision_mask_value(1, false)
-		if !tile.is_in_group("stage_tile"):
-			tile.add_to_group("stage_tile")
-		if enabled:
-			var cell: Array = tiles[index]
-			tile.position = Vector2(cell[0] * tile_size + tile_size * 0.5, cell[1] * tile_size + tile_size * 0.5)
 
 
 func _configure_enemies() -> void:
