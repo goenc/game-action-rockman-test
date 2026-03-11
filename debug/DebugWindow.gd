@@ -1,7 +1,7 @@
 extends Window
 class_name DebugWindow
 
-var _pending_action_state: Dictionary = {}
+var _pending_pressed_inputs: Dictionary = {}
 var _pending_event_history: Array[String] = []
 
 @onready var _input_panel = $DebugInputPanel
@@ -16,15 +16,15 @@ func _ready() -> void:
 	_apply_pending_state()
 
 
-func update_input_state(action_state: Dictionary, event_history: Array[String]) -> void:
-	_pending_action_state = action_state
+func update_input_state(pressed_inputs: Dictionary, event_history: Array[String]) -> void:
+	_pending_pressed_inputs = pressed_inputs
 	_pending_event_history = event_history
 	if is_node_ready():
 		_apply_pending_state()
 
 
 func _apply_pending_state() -> void:
-	_input_panel.update_input_state(_pending_action_state, _pending_event_history)
+	_input_panel.update_input_state(_pending_pressed_inputs, _pending_event_history)
 
 
 func _move_near_main_window() -> void:
