@@ -6,8 +6,8 @@
 [node name="DebugWindow" type="Window"]
 title = "Input Debugger"
 initial_position = 2
-size = Vector2i(360, 160)
-min_size = Vector2i(320, 140)
+size = Vector2i(700, 250)
+min_size = Vector2i(600, 220)
 wrap_controls = true
 script = ExtResource("1_window_script")
 

@@ -8,6 +8,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("1_panel_script")
 
@@ -28,25 +29,39 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = 10
 
-[node name="CurrentInputTitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="TopRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "現在入力"
+size_flags_horizontal = 3
 
-[node name="CurrentInputLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="CurrentInputLabel" type="Label" parent="MarginContainer/VBoxContainer/TopRow"]
 layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 38)
 mouse_filter = 2
 theme_override_font_sizes/font_size = 30
 text = "入力 : なし"
 autowrap_mode = 3
 clip_text = false
 
+[node name="InputLogButton" type="Button" parent="MarginContainer/VBoxContainer/TopRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(140, 0)
+size_flags_horizontal = 8
+text = "入力ログ表示"
+
 [node name="PressCountLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "同時押し数 : 0"
 
 [node name="PressedKeysLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_minimum_size = Vector2(0, 44)
 text = "押下中キー : なし"
 autowrap_mode = 3

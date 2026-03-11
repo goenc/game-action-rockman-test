@@ -32,10 +32,12 @@ func _create_debug_windows() -> void:
 		_debug_window = DEBUG_WINDOW_SCENE.instantiate()
 		get_tree().root.add_child(_debug_window)
 		_debug_window.show()
+		if _debug_window.has_method("set_show_input_log_action"):
+			_debug_window.set_show_input_log_action(Callable(self, "_show_debug_log_window"))
 	if !is_instance_valid(_debug_log_window):
 		_debug_log_window = DEBUG_LOG_WINDOW_SCENE.instantiate()
 		get_tree().root.add_child(_debug_log_window)
-		_debug_log_window.show()
+		_debug_log_window.hide()
 	call_deferred("_push_state_to_window")
 
 
@@ -44,6 +46,14 @@ func _push_state_to_window() -> void:
 		_debug_window.update_input_state(_pressed_inputs.duplicate())
 	if is_instance_valid(_debug_log_window):
 		_debug_log_window.update_event_history(_event_history.duplicate())
+
+
+func _show_debug_log_window() -> void:
+	if !is_instance_valid(_debug_log_window):
+		_debug_log_window = DEBUG_LOG_WINDOW_SCENE.instantiate()
+		get_tree().root.add_child(_debug_log_window)
+	_debug_log_window.show()
+	_debug_log_window.move_to_foreground()
 
 
 func _update_pressed_inputs(event: InputEvent) -> void:

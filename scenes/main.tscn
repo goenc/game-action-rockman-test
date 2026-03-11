@@ -1,24 +1,16 @@
-[gd_scene format=4]
+[gd_scene format=4 uid="uid://bt7eu72ulw04w"]
 
-[ext_resource type="Script" path="res://scripts/game/game_manager.gd" id="1_game_manager"]
+[ext_resource type="Script" uid="uid://b45pt8fvu10bi" path="res://scripts/game/game_manager.gd" id="1_game_manager"]
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player_scene"]
-[ext_resource type="TileSet" path="res://scenes/ground_tileset.tres" id="3_0ld40"]
+[ext_resource type="TileSet" uid="uid://q6bd0ui06wdq" path="res://scenes/ground_tileset.tres" id="3_0ld40"]
 [ext_resource type="PackedScene" path="res://scenes/ui/title.tscn" id="3_title_scene"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="4_hud_scene"]
 [ext_resource type="PackedScene" path="res://scenes/ui/clear.tscn" id="5_clear_scene"]
-[ext_resource type="Script" path="res://scripts/game/enemy_walker.gd" id="5_gqmmt"]
 [ext_resource type="PackedScene" path="res://scenes/enemy_walker.tscn" id="7_walker_scene"]
-[ext_resource type="Script" path="res://scripts/game/enemy_turret.gd" id="7_yc10j"]
 [ext_resource type="PackedScene" path="res://scenes/enemy_turret.tscn" id="8_turret_scene"]
 [ext_resource type="PackedScene" path="res://scenes/boss.tscn" id="9_boss_scene"]
-[ext_resource type="Script" path="res://scripts/game/boss.gd" id="9_jscy8"]
 [ext_resource type="PackedScene" path="res://scenes/enemy_bullet.tscn" id="10_enemy_bullet_scene"]
-[ext_resource type="Script" path="res://scripts/game/enemy_bullet.gd" id="11_pm3ni"]
-[ext_resource type="Script" path="res://scripts/game/stage_01.gd" id="11_stage"]
-[ext_resource type="Script" path="res://scripts/player/player.gd" id="13_y6deb"]
-[ext_resource type="Script" path="res://scripts/ui/title.gd" id="15_og1vs"]
-[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="17_2wyq8"]
-[ext_resource type="Script" path="res://scripts/ui/clear.gd" id="19_vxglm"]
+[ext_resource type="Script" uid="uid://c7nwpmydumneh" path="res://scripts/game/stage_01.gd" id="11_stage"]
 
 [node name="Main" type="Node2D" unique_id=1763189076]
 script = ExtResource("1_game_manager")
@@ -27,192 +19,69 @@ script = ExtResource("1_game_manager")
 script = ExtResource("11_stage")
 
 [node name="GroundLayer" type="TileMapLayer" parent="Stage" unique_id=1715953495 groups=["stage_tile"]]
-tile_map_data = PackedByteArray("AAAAAAoAAAAAAAAAAAABAAoAAAAAAAAAAAACAAoAAAAAAAAAAAADAAoAAAAAAAAAAAAEAAoAAAAAAAAAAAAFAAoAAAAAAAAAAAAGAAoAAAAAAAAAAAAHAAoAAAAAAAAAAAAIAAoAAAAAAAAAAAAJAAoAAAAAAAAAAAAKAAoAAAAAAAAAAAALAAoAAAAAAAAAAAAMAAoAAAAAAAAAAAANAAoAAAAAAAAAAAAOAAoAAAAAAAAAAAAPAAoAAAAAAAAAAAAQAAoAAAAAAAAAAAARAAoAAAAAAAAAAAASAAoAAAAAAAAAAAATAAoAAAAAAAAAAAAUAAoAAAAAAAAAAAAVAAoAAAAAAAAAAAAWAAoAAAAAAAAAAAAXAAoAAAAAAAAAAAAYAAoAAAAAAAAAAAAZAAoAAAAAAAAAAAAaAAoAAAAAAAAAAAAbAAoAAAAAAAAAAAAcAAoAAAAAAAAAAAAdAAoAAAAAAAAAAAAeAAoAAAAAAAAAAAAfAAoAAAAAAAAAAAAgAAoAAAAAAAAAAAAhAAoAAAAAAAAAAAAiAAoAAAAAAAAAAAAjAAoAAAAAAAAAAAAkAAoAAAAAAAAAAAAlAAoAAAAAAAAAAAAmAAoAAAAAAAAAAAAnAAoAAAAAAAAAAAAoAAoAAAAAAAAAAAApAAoAAAAAAAAAAAAqAAoAAAAAAAAAAAArAAoAAAAAAAAAAAAsAAoAAAAAAAAAAAAtAAoAAAAAAAAAAAAuAAoAAAAAAAAAAAAvAAoAAAAAAAAAAAAwAAoAAAAAAAAAAAAxAAoAAAAAAAAAAAAyAAoAAAAAAAAAAAAzAAoAAAAAAAAAAAA0AAoAAAAAAAAAAAA1AAoAAAAAAAAAAAA2AAoAAAAAAAAAAAA3AAoAAAAAAAAAAAA4AAoAAAAAAAAAAAA5AAoAAAAAAAAAAAA6AAoAAAAAAAAAAAA7AAoAAAAAAAAAAAA8AAoAAAAAAAAAAAA9AAoAAAAAAAAAAAA+AAoAAAAAAAAAAAA/AAoAAAAAAAAAAABAAAoAAAAAAAAAAABBAAoAAAAAAAAAAABCAAoAAAAAAAAAAABDAAoAAAAAAAAAAABEAAoAAAAAAAAAAABFAAoAAAAAAAAAAABGAAoAAAAAAAAAAABHAAoAAAAAAAAAAABIAAoAAAAAAAAAAABJAAoAAAAAAAAAAABKAAoAAAAAAAAAAABLAAoAAAAAAAAAAABMAAoAAAAAAAAAAABNAAoAAAAAAAAAAABOAAoAAAAAAAAAAABPAAoAAAAAAAAAAAAWAAkAAAAAAAAAAAAXAAkAAAAAAAAAAAAYAAgAAAAAAAAAAAAZAAgAAAAAAAAAAAAaAAcAAAAAAAAAAAAbAAcAAAAAAAAAAAAeAAgAAAAAAAAAAAAfAAgAAAAAAAAAAAAiAAkAAAAAAAAAAAAjAAkAAAAAAAAAAAAsAAgAAAAAAAAAAAAtAAgAAAAAAAAAAAAyAAcAAAAAAAAAAAAzAAcAAAAAAAAAAAA4AAgAAAAAAAAAAAA5AAgAAAAAAAAAAAA9AAkAAAAAAAAAAAA9AAgAAAAAAAAAAAA9AAcAAAAAAAAAAABOAAkAAAAAAAAAAABOAAgAAAAAAAAAAABOAAcAAAAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAAAAAoAAAAAAAAAAAABAAoAAAAAAAAAAAACAAoAAAAAAAAAAAADAAoAAAAAAAAAAAAEAAoAAAAAAAAAAAAFAAoAAAAAAAAAAAAGAAoAAAAAAAAAAAAHAAoAAAAAAAAAAAAIAAoAAAAAAAAAAAAJAAoAAAAAAAAAAAAKAAoAAAAAAAAAAAALAAoAAAAAAAAAAAAMAAoAAAAAAAAAAAANAAoAAAAAAAAAAAAOAAoAAAAAAAAAAAAPAAoAAAAAAAAAAAAQAAoAAAAAAAAAAAARAAoAAAAAAAAAAAASAAoAAAAAAAAAAAATAAoAAAAAAAAAAAAUAAoAAAAAAAAAAAAVAAoAAAAAAAAAAAAWAAoAAAAAAAAAAAAXAAoAAAAAAAAAAAAYAAoAAAAAAAAAAAAZAAoAAAAAAAAAAAAaAAoAAAAAAAAAAAAbAAoAAAAAAAAAAAAcAAoAAAAAAAAAAAAdAAoAAAAAAAAAAAAeAAoAAAAAAAAAAAAfAAoAAAAAAAAAAAAgAAoAAAAAAAAAAAAhAAoAAAAAAAAAAAAiAAoAAAAAAAAAAAAjAAoAAAAAAAAAAAAkAAoAAAAAAAAAAAAlAAoAAAAAAAAAAAAmAAoAAAAAAAAAAAAnAAoAAAAAAAAAAAAoAAoAAAAAAAAAAAApAAoAAAAAAAAAAAAqAAoAAAAAAAAAAAArAAoAAAAAAAAAAAAsAAoAAAAAAAAAAAAtAAoAAAAAAAAAAAAuAAoAAAAAAAAAAAAvAAoAAAAAAAAAAAAwAAoAAAAAAAAAAAAxAAoAAAAAAAAAAAAyAAoAAAAAAAAAAAAzAAoAAAAAAAAAAAA0AAoAAAAAAAAAAAA1AAoAAAAAAAAAAAA2AAoAAAAAAAAAAAA3AAoAAAAAAAAAAAA4AAoAAAAAAAAAAAA5AAoAAAAAAAAAAAA6AAoAAAAAAAAAAAA7AAoAAAAAAAAAAAA8AAoAAAAAAAAAAAA9AAoAAAAAAAAAAAA+AAoAAAAAAAAAAAA/AAoAAAAAAAAAAABAAAoAAAAAAAAAAABBAAoAAAAAAAAAAABCAAoAAAAAAAAAAABDAAoAAAAAAAAAAABEAAoAAAAAAAAAAABFAAoAAAAAAAAAAABGAAoAAAAAAAAAAABHAAoAAAAAAAAAAABIAAoAAAAAAAAAAABJAAoAAAAAAAAAAABKAAoAAAAAAAAAAABLAAoAAAAAAAAAAABMAAoAAAAAAAAAAABNAAoAAAAAAAAAAABOAAoAAAAAAAAAAABPAAoAAAAAAAAAAAAWAAkAAAAAAAAAAAAXAAkAAAAAAAAAAAAYAAgAAAAAAAAAAAAZAAgAAAAAAAAAAAAaAAcAAAAAAAAAAAAbAAcAAAAAAAAAAAAeAAgAAAAAAAAAAAAfAAgAAAAAAAAAAAAiAAkAAAAAAAAAAAAjAAkAAAAAAAAAAAAsAAgAAAAAAAAAAAAtAAgAAAAAAAAAAAAyAAcAAAAAAAAAAAAzAAcAAAAAAAAAAAA4AAgAAAAAAAAAAAA5AAgAAAAAAAAAAAA9AAkAAAAAAAAAAAA9AAgAAAAAAAAAAAA9AAcAAAAAAAAAAABOAAkAAAAAAAAAAABOAAgAAAAAAAAAAABOAAcAAAAAAAAAAAArAAkAAAAAAAAAAAAwAAgAAAAAAAAAAAAvAAgAAAAAAAAAAAA1AAgAAAAAAAAAAAA2AAgAAAAAAAAAAAA7AAgAAAAAAAAAAAA8AAcAAAAAAAAAAAA=")
 tile_set = ExtResource("3_0ld40")
 
 [node name="Enemies" type="Node2D" parent="Stage" unique_id=244102929]
 
 [node name="Walkers" type="Node2D" parent="Stage/Enemies" unique_id=854832981]
 
-[node name="Walker01" type="CharacterBody2D" parent="Stage/Enemies/Walkers" unique_id=621293118 instance=ExtResource("7_walker_scene")]
-visible = false
-collision_layer = 2
-script = ExtResource("5_gqmmt")
+[node name="Walker01" parent="Stage/Enemies/Walkers" unique_id=621293118 instance=ExtResource("7_walker_scene")]
 
-[node name="Walker02" type="CharacterBody2D" parent="Stage/Enemies/Walkers" unique_id=529704951 instance=ExtResource("7_walker_scene")]
-visible = false
-collision_layer = 2
-script = ExtResource("5_gqmmt")
+[node name="Walker02" parent="Stage/Enemies/Walkers" unique_id=529704951 instance=ExtResource("7_walker_scene")]
 
-[node name="Walker03" type="CharacterBody2D" parent="Stage/Enemies/Walkers" unique_id=1360232185 instance=ExtResource("7_walker_scene")]
-visible = false
-collision_layer = 2
-script = ExtResource("5_gqmmt")
+[node name="Walker03" parent="Stage/Enemies/Walkers" unique_id=1360232185 instance=ExtResource("7_walker_scene")]
 
-[node name="Walker04" type="CharacterBody2D" parent="Stage/Enemies/Walkers" unique_id=664204955 instance=ExtResource("7_walker_scene")]
-visible = false
-collision_layer = 2
-script = ExtResource("5_gqmmt")
+[node name="Walker04" parent="Stage/Enemies/Walkers" unique_id=664204955 instance=ExtResource("7_walker_scene")]
 
 [node name="Turrets" type="Node2D" parent="Stage/Enemies" unique_id=1614038427]
 
-[node name="Turret01" type="Node2D" parent="Stage/Enemies/Turrets" unique_id=466482098 instance=ExtResource("8_turret_scene")]
-visible = false
-script = ExtResource("7_yc10j")
+[node name="Turret01" parent="Stage/Enemies/Turrets" unique_id=466482098 instance=ExtResource("8_turret_scene")]
 
-[node name="Turret02" type="Node2D" parent="Stage/Enemies/Turrets" unique_id=606884228 instance=ExtResource("8_turret_scene")]
-visible = false
-script = ExtResource("7_yc10j")
+[node name="Turret02" parent="Stage/Enemies/Turrets" unique_id=606884228 instance=ExtResource("8_turret_scene")]
 
-[node name="Turret03" type="Node2D" parent="Stage/Enemies/Turrets" unique_id=1962790990 instance=ExtResource("8_turret_scene")]
-visible = false
-script = ExtResource("7_yc10j")
+[node name="Turret03" parent="Stage/Enemies/Turrets" unique_id=1962790990 instance=ExtResource("8_turret_scene")]
 
-[node name="Boss" type="CharacterBody2D" parent="Stage/Enemies" unique_id=1049553674 instance=ExtResource("9_boss_scene")]
-visible = false
-collision_layer = 2
-script = ExtResource("9_jscy8")
+[node name="Boss" parent="Stage/Enemies" unique_id=1049553674 instance=ExtResource("9_boss_scene")]
 
 [node name="EnemyBullets" type="Node2D" parent="Stage" unique_id=305086182]
 
-[node name="EnemyBullet01" type="Area2D" parent="Stage/EnemyBullets" unique_id=816369283 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet01" parent="Stage/EnemyBullets" unique_id=816369283 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="EnemyBullet02" type="Area2D" parent="Stage/EnemyBullets" unique_id=906753158 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet02" parent="Stage/EnemyBullets" unique_id=906753158 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="EnemyBullet03" type="Area2D" parent="Stage/EnemyBullets" unique_id=775141624 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet03" parent="Stage/EnemyBullets" unique_id=775141624 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="EnemyBullet04" type="Area2D" parent="Stage/EnemyBullets" unique_id=772296334 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet04" parent="Stage/EnemyBullets" unique_id=772296334 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="EnemyBullet05" type="Area2D" parent="Stage/EnemyBullets" unique_id=1956216783 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet05" parent="Stage/EnemyBullets" unique_id=1956216783 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="EnemyBullet06" type="Area2D" parent="Stage/EnemyBullets" unique_id=317960898 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet06" parent="Stage/EnemyBullets" unique_id=317960898 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="EnemyBullet07" type="Area2D" parent="Stage/EnemyBullets" unique_id=1423740523 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet07" parent="Stage/EnemyBullets" unique_id=1423740523 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="EnemyBullet08" type="Area2D" parent="Stage/EnemyBullets" unique_id=40848562 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet08" parent="Stage/EnemyBullets" unique_id=40848562 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="EnemyBullet09" type="Area2D" parent="Stage/EnemyBullets" unique_id=1882571849 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet09" parent="Stage/EnemyBullets" unique_id=1882571849 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="EnemyBullet10" type="Area2D" parent="Stage/EnemyBullets" unique_id=1611333844 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet10" parent="Stage/EnemyBullets" unique_id=1611333844 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="EnemyBullet11" type="Area2D" parent="Stage/EnemyBullets" unique_id=1776911039 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet11" parent="Stage/EnemyBullets" unique_id=1776911039 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="EnemyBullet12" type="Area2D" parent="Stage/EnemyBullets" unique_id=1886166187 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet12" parent="Stage/EnemyBullets" unique_id=1886166187 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="EnemyBullet13" type="Area2D" parent="Stage/EnemyBullets" unique_id=1085456038 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet13" parent="Stage/EnemyBullets" unique_id=1085456038 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="EnemyBullet14" type="Area2D" parent="Stage/EnemyBullets" unique_id=1017184104 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet14" parent="Stage/EnemyBullets" unique_id=1017184104 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="EnemyBullet15" type="Area2D" parent="Stage/EnemyBullets" unique_id=266847405 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet15" parent="Stage/EnemyBullets" unique_id=266847405 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="EnemyBullet16" type="Area2D" parent="Stage/EnemyBullets" unique_id=605399523 instance=ExtResource("10_enemy_bullet_scene")]
-visible = false
-collision_layer = 8
-collision_mask = 17
-monitoring = false
-monitorable = false
-script = ExtResource("11_pm3ni")
+[node name="EnemyBullet16" parent="Stage/EnemyBullets" unique_id=605399523 instance=ExtResource("10_enemy_bullet_scene")]
 
-[node name="Player" type="CharacterBody2D" parent="." unique_id=628198543 instance=ExtResource("2_player_scene")]
-collision_layer = 2
-script = ExtResource("13_y6deb")
+[node name="Player" parent="." unique_id=628198543 instance=ExtResource("2_player_scene")]
 
-[node name="Title" type="CanvasLayer" parent="." unique_id=844566394 instance=ExtResource("3_title_scene")]
-script = ExtResource("15_og1vs")
+[node name="Title" parent="." unique_id=844566394 instance=ExtResource("3_title_scene")]
 
-[node name="Hud" type="CanvasLayer" parent="." unique_id=873235544 instance=ExtResource("4_hud_scene")]
-script = ExtResource("17_2wyq8")
+[node name="Hud" parent="." unique_id=873235544 instance=ExtResource("4_hud_scene")]
 
-[node name="Clear" type="CanvasLayer" parent="." unique_id=19522033 instance=ExtResource("5_clear_scene")]
-visible = false
-script = ExtResource("19_vxglm")
+[node name="Clear" parent="." unique_id=19522033 instance=ExtResource("5_clear_scene")]

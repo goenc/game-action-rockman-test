@@ -1,7 +1,5 @@
-enemy_walkerの物理監視状態変更をdeferred化
+入力デバッガー上段レイアウト拡張と入力ログ表示ボタン追加
 
-・deactivateからの無効化反映をcall_deferred経由に変更して物理シグナル中の直接変更を回避
-・_enable_nodes内のmonitoringとmonitorable変更をset_deferredへ置換
-・CollisionShape2D.disabled変更を専用関数へ分離しcall_deferredで実行
-・起動監視でrunスクリプトからのプロセス起動を確認
-
+・入力デバッガーウィンドウの初期サイズと最小サイズを拡大し上段表示欠け対策を適用
+・1行目を左ラベル右ボタンの横並びに変更し入力ログ表示ボタンから既存ログウィンドウ表示処理を呼び出し
+・tools/run.ps1 による起動確認を実施
