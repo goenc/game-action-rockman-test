@@ -1,16 +1,6 @@
-床を TileMapLayer 正本へ移行
+入力デバッガーを別ウインドウで追加
 
-・矩形描画だけで遊べるロックマン風1ステージの通しプレイ構成を実装
-・タイトル画面とゲーム本編とクリア画面の状態遷移と Input Map 初期登録を実装
-・プレイヤー移動とジャンプと単発ショットと被弾と無敵時間と HUD ライフ表示を実装
-・JSON 定義のステージとタイル配置と歩行敵と砲台とボスと敵弾とカメラ追従を実装
-・godot_console --path . --display-driver headless --quit-after 1 で起動確認
-・tools/run.ps1 の起動を短時間確認
-・Stage の床正本を TileMapLayer へ移行して JSON 座標流し込みを廃止
-・main.tscn の固定床ノード群を GroundLayer の TileMapLayer と ground_tileset.tres 参照に置き換えた
-・stage_01.gd から tiles_root と _configure_tiles と setup と reset_stage の床再構成呼び出しを削除した
-・stage_01.json の tiles を削除し tile_block.tscn に stage_tile グループを付けて既存の弾衝突判定を維持した
-・godot_console --display-driver headless --path . --quit-after 1 で起動確認
-・tools/run.ps1 の起動を 5 秒間確認
-・headless 検証で GroundLayer 102 セルと床レイキャスト命中を確認
-・TileMapLayer のセル追加保存と削除保存の roundtrip で 102→103→102 セルを確認
+・別ウインドウ表示の入力デバッガーを Autoload ベースで追加した
+・debug 配下に DebugManager DebugWindow DebugInputPanel を追加し、全 InputMap アクション監視と生入力履歴表示を実装した
+・project.godot に DebugManager の AutoLoad を追加し、起動時に入力デバッガー用 Window を生成するようにした
+・tools/run.ps1 で Godot 4.6.1 を起動し、stderr が空のまま起動処理に入ることを確認した

@@ -1,0 +1,19 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://debug/DebugWindow.gd" id="1_window_script"]
+[ext_resource type="PackedScene" path="res://debug/panels/DebugInputPanel.tscn" id="2_input_panel"]
+
+[node name="DebugWindow" type="Window"]
+title = "Input Debugger"
+initial_position = 2
+size = Vector2i(520, 720)
+min_size = Vector2i(420, 480)
+wrap_controls = true
+script = ExtResource("1_window_script")
+
+[node name="DebugInputPanel" parent="." instance=ExtResource("2_input_panel")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
