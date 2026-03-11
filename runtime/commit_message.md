@@ -1,6 +1,6 @@
-DebugWindow と DebugLogWindow の初期レイアウト固定を scene 管理へ移行
+デバッグウィンドウ直下パネルの Anchor を Top Left 基本へ統一
 
-・DebugWindow の _ready() から min_size と size の固定代入を削除し tscn 設定値を実行時に維持する構造へ変更
-・DebugLogWindow の _ready() から min_size と size の固定代入を削除し tscn 設定値を実行時に維持する構造へ変更
-・position は _move_near_main_window と _move_near_debug_window の実行時配置ロジックのため保持
-・tools/run.ps1 の起動確認と対象 tscn の size/min_size 一致を確認
+・DebugInputPanel の UI 構成を Control 自由配置へ変更し既存 signal 接続を維持した履歴を反映
+・DebugWindow と DebugLogWindow の size/min_size は scene 正本を維持し .gd の固定代入を削除した履歴を反映
+・Window 直下の DebugInputPanel と DebugLogPanel で Full Rect 由来の Anchor と grow 設定を削除し anchor_* を 0.0 へ統一
+・headless 起動確認と quit-after 起動確認が終了コード0で成功し対象 scene のロードを確認
