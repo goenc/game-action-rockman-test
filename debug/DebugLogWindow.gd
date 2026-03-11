@@ -9,8 +9,6 @@ var _pending_event_history: Array[String] = []
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	title = "Input Log"
-	min_size = Vector2i(360, 140)
-	size = Vector2i(420, 160)
 	_move_near_debug_window()
 	_apply_pending_state()
 

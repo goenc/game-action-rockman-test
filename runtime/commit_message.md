@@ -1,6 +1,6 @@
-デバッグ入力表示UIをControl自由配置へ変更し表示領域を拡大
+DebugWindow と DebugLogWindow の初期レイアウト固定を scene 管理へ移行
 
-・DebugInputPanel の Container ノードを除去し InputGroup 配下へラベルとボタンを直接配置した
-・1行目右側へ 入力ログ表示 ボタンを追加配置し既存の入力ログ表示処理呼び出しを維持した
-・DebugWindow の size と min_size を拡大し上部表示が欠けにくい初期設定へ調整した
-・godot_console --headless --path . --quit の成功を確認した
+・DebugWindow の _ready() から min_size と size の固定代入を削除し tscn 設定値を実行時に維持する構造へ変更
+・DebugLogWindow の _ready() から min_size と size の固定代入を削除し tscn 設定値を実行時に維持する構造へ変更
+・position は _move_near_main_window と _move_near_debug_window の実行時配置ロジックのため保持
+・tools/run.ps1 の起動確認と対象 tscn の size/min_size 一致を確認

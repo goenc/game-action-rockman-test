@@ -10,8 +10,6 @@ var _show_input_log_action: Callable = Callable()
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	title = "Input Debugger"
-	min_size = Vector2i(840, 300)
-	size = Vector2i(980, 340)
 	if _input_panel.has_signal("show_input_log_requested"):
 		_input_panel.show_input_log_requested.connect(_on_show_input_log_requested)
 	_move_near_main_window()
