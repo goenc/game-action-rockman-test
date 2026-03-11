@@ -49,7 +49,7 @@ func deactivate() -> void:
 	alive = false
 	gameplay_active = false
 	velocity = Vector2.ZERO
-	_enable_nodes(false)
+	call_deferred("_apply_deactivate_state")
 
 
 func take_damage(amount: int) -> void:
@@ -83,14 +83,23 @@ func _should_turn() -> bool:
 
 func _enable_nodes(enabled: bool) -> void:
 	visible = enabled
-	collider.disabled = !enabled
-	hitbox.monitoring = enabled
-	hitbox.monitorable = enabled
-	hitbox_shape.disabled = !enabled
-	touch_area.monitoring = enabled
-	touch_area.monitorable = enabled
+	call_deferred("_set_collision_enabled", collider, enabled)
+	hitbox.set_deferred("monitoring", enabled)
+	hitbox.set_deferred("monitorable", enabled)
+	call_deferred("_set_collision_enabled", hitbox_shape, enabled)
+	touch_area.set_deferred("monitoring", enabled)
+	touch_area.set_deferred("monitorable", enabled)
 	touch_area.set_meta("touch_damage", touch_damage)
-	touch_shape.disabled = !enabled
+	call_deferred("_set_collision_enabled", touch_shape, enabled)
+
+
+func _apply_deactivate_state() -> void:
+	_enable_nodes(false)
+
+
+func _set_collision_enabled(target: CollisionShape2D, enabled: bool) -> void:
+	if is_instance_valid(target):
+		target.disabled = !enabled
 
 
 func _apply_size(size: Vector2) -> void:

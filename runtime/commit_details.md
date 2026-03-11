@@ -1,9 +1,10 @@
-日時: 2026-03-11 20:35:38 JST
-summary: player_bullet.gdのdeactivate処理をdeferred化して物理シグナル中の状態変更エラーを回避
-code_changes:
-・deactivate内のmonitoringとmonitorableの直接変更をset_deferredに変更
-・deactivate内のCollisionShape2D.disabled直接変更をcall_deferred経由の_disable_collisionへ変更
-・_on_body_enteredはdeactivate呼び出しのみの構造を維持
-verification:
-・tools/run.ps1を実行し起動プロセスが継続することを確認（実行はタイムアウトで打ち切り）
+日時: 2026-03-11 20:45:29 JST
+対象: scripts/game/enemy_walker.gd
+変更:
+・enemy_walker.gd の deactivate からノード有効無効反映を call_deferred で遅延実行するよう変更
+・enemy_walker.gd の _enable_nodes で Area2D.monitoring と monitorable を set_deferred 化
+・enemy_walker.gd の CollisionShape2D.disabled 切替を _set_collision_enabled に分離し call_deferred で実行
+確認:
+・tools/run.ps1 を起動監視し Godot プロセス起動を確認
+・物理シグナル中の即時状態変更を回避する実装に置換したことをコード確認
 
