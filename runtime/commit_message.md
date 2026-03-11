@@ -1,5 +1,6 @@
-DebugInputPanelの主表示更新を復旧
+EnemyBulletの物理監視状態変更をdeferred化
 
-・DebugInputPanelのupdate_input_stateからログラベル更新処理を削除し未定義参照エラーを解消
-・入力表示 同時押し数表示 押下中キー表示のみを更新する責務に統一
-・tools/run.ps1による起動確認でlaunch_okを確認
+・enemy_bullet.gdのdeactivateでmonitoringとmonitorableの直接変更をset_deferredへ置換
+・CollisionShape2D.disabledの直接変更をcall_deferredと_disable_collisionへ置換
+・_on_body_enteredは状態変更を行わずdeactivate呼び出しのみの構造を維持
+・godot_consoleのheadless起動確認でエラーなし

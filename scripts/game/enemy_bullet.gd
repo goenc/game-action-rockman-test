@@ -34,9 +34,14 @@ func deactivate() -> void:
 	active = false
 	velocity = Vector2.ZERO
 	hide()
-	collider.disabled = true
-	monitoring = false
-	monitorable = false
+	call_deferred("_disable_collision")
+	set_deferred("monitoring", false)
+	set_deferred("monitorable", false)
+
+
+func _disable_collision() -> void:
+	if has_node("CollisionShape2D"):
+		collider.disabled = true
 
 
 func is_active() -> bool:
