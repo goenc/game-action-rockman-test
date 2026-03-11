@@ -5,10 +5,10 @@ const EMPTY_PRESSED_KEYS_TEXT := "押下中キー : なし"
 
 signal show_input_log_requested
 
-@onready var _current_input_label: Label = $MarginContainer/VBoxContainer/TopRow/CurrentInputLabel
-@onready var _press_count_label: Label = $MarginContainer/VBoxContainer/PressCountLabel
-@onready var _pressed_keys_label: Label = $MarginContainer/VBoxContainer/PressedKeysLabel
-@onready var _input_log_button: Button = $MarginContainer/VBoxContainer/TopRow/InputLogButton
+@onready var _current_input_label: Label = $InputGroup/CurrentInputLabel
+@onready var _press_count_label: Label = $InputGroup/PressCountLabel
+@onready var _pressed_keys_label: Label = $InputGroup/PressedKeysLabel
+@onready var _input_log_button: Button = $InputGroup/InputLogButton
 
 
 func _ready() -> void:
