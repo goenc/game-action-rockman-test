@@ -1,9 +1,11 @@
 extends Node
 
 const DEBUG_WINDOW_SCENE := preload("res://debug/DebugWindow.tscn")
+const DEBUG_LOG_WINDOW_SCENE := preload("res://debug/DebugLogWindow.tscn")
 const MAX_EVENT_HISTORY := 40
 
 var _debug_window = null
+var _debug_log_window = null
 var _pressed_inputs: Dictionary = {}
 var _event_history: Array[String] = []
 
@@ -11,7 +13,7 @@ var _event_history: Array[String] = []
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	set_process_input(true)
-	call_deferred("_create_debug_window")
+	call_deferred("_create_debug_windows")
 
 
 func _input(event: InputEvent) -> void:
@@ -22,20 +24,26 @@ func _input(event: InputEvent) -> void:
 	_push_state_to_window()
 
 
-func _create_debug_window() -> void:
-	if is_instance_valid(_debug_window):
+func _create_debug_windows() -> void:
+	if is_instance_valid(_debug_window) and is_instance_valid(_debug_log_window):
 		return
 	get_tree().root.gui_embed_subwindows = false
-	_debug_window = DEBUG_WINDOW_SCENE.instantiate()
-	get_tree().root.add_child(_debug_window)
-	_debug_window.show()
+	if !is_instance_valid(_debug_window):
+		_debug_window = DEBUG_WINDOW_SCENE.instantiate()
+		get_tree().root.add_child(_debug_window)
+		_debug_window.show()
+	if !is_instance_valid(_debug_log_window):
+		_debug_log_window = DEBUG_LOG_WINDOW_SCENE.instantiate()
+		get_tree().root.add_child(_debug_log_window)
+		_debug_log_window.show()
 	call_deferred("_push_state_to_window")
 
 
 func _push_state_to_window() -> void:
-	if !is_instance_valid(_debug_window):
-		return
-	_debug_window.update_input_state(_pressed_inputs.duplicate(), _event_history.duplicate())
+	if is_instance_valid(_debug_window):
+		_debug_window.update_input_state(_pressed_inputs.duplicate())
+	if is_instance_valid(_debug_log_window):
+		_debug_log_window.update_event_history(_event_history.duplicate())
 
 
 func _update_pressed_inputs(event: InputEvent) -> void:

@@ -50,19 +50,3 @@ text = "同時押し数 : 0"
 layout_mode = 2
 text = "押下中キー : なし"
 autowrap_mode = 3
-
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="EventTitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "入力ログ"
-
-[node name="EventLogLabel" type="Label" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 300)
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 2
-text = "Raw input event is empty."
-autowrap_mode = 3
-clip_text = false

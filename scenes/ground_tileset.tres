@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" format=3]
+[gd_resource type="TileSet" format=3 uid="uid://q6bd0ui06wdq"]
 
 [ext_resource type="PackedScene" path="res://scenes/tile_block.tscn" id="1_tile_block"]
 
