@@ -44,9 +44,9 @@ func deactivate(emit_signal: bool = true) -> void:
 	var was_active := active
 	active = false
 	hide()
-	collider.disabled = true
-	monitoring = false
-	monitorable = false
+	call_deferred("_disable_collision")
+	set_deferred("monitoring", false)
+	set_deferred("monitorable", false)
 	if was_active and emit_signal:
 		despawned.emit()
 
@@ -72,6 +72,11 @@ func _on_area_entered(area: Area2D) -> void:
 	if target != null and target.has_method("take_damage"):
 		target.take_damage(damage)
 	deactivate()
+
+
+func _disable_collision() -> void:
+	if is_instance_valid(collider):
+		collider.disabled = true
 
 
 func _apply_size(size: Vector2) -> void:
