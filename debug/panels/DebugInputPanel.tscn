@@ -1,8 +1,9 @@
-[gd_scene format=4]
+[gd_scene format=3 uid="uid://dwdjjpo008erb"]
 
-[ext_resource type="Script" path="res://debug/panels/DebugInputPanel.gd" id="1_panel_script"]
+[ext_resource type="Script" uid="uid://cxi0eeuj42aws" path="res://debug/panels/DebugInputPanel.gd" id="1_panel_script"]
 
-[node name="DebugInputPanel" type="Control"]
+[node name="DebugInputPanel" type="Control" unique_id=1134805185]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -12,43 +13,47 @@ size_flags_vertical = 3
 mouse_filter = 2
 script = ExtResource("1_panel_script")
 
-[node name="InputGroup" type="Control" parent="."]
-anchors_preset = 15
+[node name="InputGroup" type="Control" parent="." unique_id=855474650]
+anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 offset_left = 12.0
 offset_top = 12.0
 offset_right = -12.0
 offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="CurrentInputLabel" type="Label" parent="InputGroup"]
+[node name="CurrentInputLabel" type="Label" parent="InputGroup" unique_id=1899402556]
+layout_mode = 0
 offset_right = 640.0
 offset_bottom = 38.0
-mouse_filter = 2
 theme_override_font_sizes/font_size = 30
 text = "入力 : なし"
 autowrap_mode = 3
-clip_text = false
 
-[node name="InputLogButton" type="Button" parent="InputGroup"]
+[node name="InputLogButton" type="Button" parent="InputGroup" unique_id=14984326]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 1
+anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -152.0
-offset_top = 6.0
-offset_right = -12.0
-offset_bottom = 42.0
-custom_minimum_size = Vector2(140, 0)
+offset_left = -137.0
+offset_top = -4.0
+offset_right = 3.0
+offset_bottom = 32.0
+grow_horizontal = 0
 text = "入力ログ表示"
 
-[node name="PressCountLabel" type="Label" parent="InputGroup"]
+[node name="PressCountLabel" type="Label" parent="InputGroup" unique_id=1009842628]
+layout_mode = 0
 offset_top = 56.0
 offset_right = 460.0
 offset_bottom = 82.0
 text = "同時押し数 : 0"
 
-[node name="PressedKeysLabel" type="Label" parent="InputGroup"]
+[node name="PressedKeysLabel" type="Label" parent="InputGroup" unique_id=305203520]
+layout_mode = 0
 offset_top = 92.0
 offset_right = 860.0
 offset_bottom = 160.0

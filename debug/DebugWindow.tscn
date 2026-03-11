@@ -1,18 +1,14 @@
-[gd_scene format=4]
+[gd_scene format=3 uid="uid://dusoncc1bm0qo"]
 
-[ext_resource type="Script" path="res://debug/DebugWindow.gd" id="1_window_script"]
-[ext_resource type="PackedScene" path="res://debug/panels/DebugInputPanel.tscn" id="2_input_panel"]
+[ext_resource type="Script" uid="uid://cajx5lsxoq4su" path="res://debug/DebugWindow.gd" id="1_window_script"]
+[ext_resource type="PackedScene" uid="uid://dwdjjpo008erb" path="res://debug/panels/DebugInputPanel.tscn" id="2_input_panel"]
 
-[node name="DebugWindow" type="Window"]
+[node name="DebugWindow" type="Window" unique_id=378167538]
+oversampling_override = 1.0
 title = "Input Debugger"
 initial_position = 2
-size = Vector2i(980, 340)
-min_size = Vector2i(840, 300)
+size = Vector2i(500, 150)
 wrap_controls = true
 script = ExtResource("1_window_script")
 
-[node name="DebugInputPanel" parent="." instance=ExtResource("2_input_panel")]
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="DebugInputPanel" parent="." unique_id=1110585034 instance=ExtResource("2_input_panel")]

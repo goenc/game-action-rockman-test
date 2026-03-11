@@ -2,19 +2,18 @@ extends Node2D
 class_name GameManager
 
 const CONFIG_PATH := "res://data/config/game_config.json"
+const TITLE_SCENE_PATH := "res://scenes/title_main.tscn"
 
 enum GameState {
-	TITLE,
 	PLAYING,
 	CLEAR,
 }
 
-var game_state: GameState = GameState.TITLE
+var game_state: GameState = GameState.PLAYING
 var game_config: Dictionary = {}
 
 @onready var stage = $Stage
 @onready var player = $Player
-@onready var title_screen = $Title
 @onready var hud = $Hud
 @onready var clear_screen = $Clear
 
@@ -28,13 +27,12 @@ func _ready() -> void:
 	stage.attach_player(player)
 	player.setup(self, game_config)
 	hud.setup(game_config)
-	title_screen.setup(game_config)
 	clear_screen.setup(game_config)
 	stage.boss_defeated.connect(_on_boss_defeated)
 	stage.player_out_of_bounds.connect(_on_player_out_of_bounds)
 	player.life_changed.connect(_on_player_life_changed)
 	player.defeated.connect(_on_player_defeated)
-	_show_title()
+	_start_game()
 
 
 func _unhandled_input(_event: InputEvent) -> void:
@@ -44,10 +42,9 @@ func _unhandled_input(_event: InputEvent) -> void:
 		return
 	if get_tree().paused:
 		return
-	if game_state == GameState.TITLE and Input.is_action_just_pressed("ui_accept"):
-		_start_game()
-	elif game_state == GameState.CLEAR and Input.is_action_just_pressed("ui_accept"):
-		_show_title()
+	if game_state == GameState.CLEAR and Input.is_action_just_pressed("ui_accept"):
+		get_tree().paused = false
+		get_tree().change_scene_to_file(TITLE_SCENE_PATH)
 
 
 func get_stage():
@@ -56,18 +53,6 @@ func get_stage():
 
 func is_gameplay_active() -> bool:
 	return game_state == GameState.PLAYING and !get_tree().paused
-
-
-func _show_title() -> void:
-	game_state = GameState.TITLE
-	get_tree().paused = false
-	stage.set_gameplay_active(false)
-	player.set_gameplay_active(false)
-	player.hide()
-	title_screen.set_active(true)
-	clear_screen.set_active(false)
-	hud.set_active(false)
-	hud.set_paused(false)
 
 
 func _start_game() -> void:
@@ -79,7 +64,6 @@ func _start_game() -> void:
 	player.show()
 	player.set_gameplay_active(true)
 	stage.set_gameplay_active(true)
-	title_screen.set_active(false)
 	clear_screen.set_active(false)
 	hud.set_active(true)
 	hud.set_paused(false)
@@ -93,6 +77,7 @@ func _show_clear() -> void:
 	player.set_gameplay_active(false)
 	clear_screen.set_active(true)
 	hud.set_active(false)
+	hud.set_paused(false)
 
 
 func _restart_stage() -> void:
@@ -156,13 +141,13 @@ func _ensure_action(action_name: String, events: Array[InputEvent]) -> void:
 		InputMap.action_add_event(action_name, event)
 
 
-func _key_event(keycode: int) -> InputEventKey:
+func _key_event(keycode: Key) -> InputEventKey:
 	var event := InputEventKey.new()
 	event.physical_keycode = keycode
 	return event
 
 
-func _joypad_button(button_index: int) -> InputEventJoypadButton:
+func _joypad_button(button_index: JoyButton) -> InputEventJoypadButton:
 	var event := InputEventJoypadButton.new()
 	event.button_index = button_index
 	return event

@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://b45pt8fvu10bi" path="res://scripts/game/game_manager.gd" id="1_game_manager"]
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player_scene"]
 [ext_resource type="TileSet" uid="uid://q6bd0ui06wdq" path="res://scenes/ground_tileset.tres" id="3_0ld40"]
-[ext_resource type="PackedScene" path="res://scenes/ui/title.tscn" id="3_title_scene"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="4_hud_scene"]
 [ext_resource type="PackedScene" path="res://scenes/ui/clear.tscn" id="5_clear_scene"]
 [ext_resource type="PackedScene" path="res://scenes/enemy_walker.tscn" id="7_walker_scene"]
@@ -79,8 +78,6 @@ tile_set = ExtResource("3_0ld40")
 [node name="EnemyBullet16" parent="Stage/EnemyBullets" unique_id=605399523 instance=ExtResource("10_enemy_bullet_scene")]
 
 [node name="Player" parent="." unique_id=628198543 instance=ExtResource("2_player_scene")]
-
-[node name="Title" parent="." unique_id=844566394 instance=ExtResource("3_title_scene")]
 
 [node name="Hud" parent="." unique_id=873235544 instance=ExtResource("4_hud_scene")]
 
