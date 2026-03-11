@@ -153,14 +153,14 @@ func _fire_shot() -> void:
 
 func _enable_nodes(enabled: bool) -> void:
 	visible = enabled
-	collider.disabled = !enabled
-	hitbox.monitoring = enabled
-	hitbox.monitorable = enabled
-	hitbox_shape.disabled = !enabled
-	touch_area.monitoring = enabled
-	touch_area.monitorable = enabled
+	collider.set_deferred("disabled", !enabled)
+	hitbox.set_deferred("monitoring", enabled)
+	hitbox.set_deferred("monitorable", enabled)
+	hitbox_shape.set_deferred("disabled", !enabled)
+	touch_area.set_deferred("monitoring", enabled)
+	touch_area.set_deferred("monitorable", enabled)
 	touch_area.set_meta("touch_damage", touch_damage)
-	touch_shape.disabled = !enabled
+	touch_shape.set_deferred("disabled", !enabled)
 
 
 func _apply_size(size: Vector2) -> void:

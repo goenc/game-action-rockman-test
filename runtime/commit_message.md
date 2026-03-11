@@ -1,7 +1,5 @@
-EnemyWalker の初期無効化順を修正
+boss被弾時の物理状態変更を遅延化
 
-・EnemyWalker の初期無効化が configure 後に再適用される問題を修正した。
-・EnemyWalker の deactivate から二重遅延を外し configure 後の有効化状態が維持されるようにした。
-・headless で main.tscn を読み込み Walker01 から Walker03 が alive=true かつ visible=true になることを確認した。
-・headless で Walker04 が alive=false かつ visible=false のまま残ることを確認した。
-・tools/run.ps1 の起動確認が成功した。
+・Boss の _enable_nodes() で CollisionShape2D.disabled と Area2D.monitoring と Area2D.monitorable の直接変更を set_deferred() に置き換えた
+・player_bullet.gd の _on_area_entered() から Boss.take_damage() を経由して _enable_nodes(false) に入る経路をソースで確認した
+・tools/run.ps1 で Godot 4.6.1 が起動し scenes/main.tscn と scripts/game/boss.gd の読み込み成功を確認した
