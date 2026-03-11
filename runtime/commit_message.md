@@ -1,5 +1,5 @@
-boss被弾時の物理状態変更を遅延化
+player.gd の物理プロパティ更新を deferred 化
 
-・Boss の _enable_nodes() で CollisionShape2D.disabled と Area2D.monitoring と Area2D.monitorable の直接変更を set_deferred() に置き換えた
-・player_bullet.gd の _on_area_entered() から Boss.take_damage() を経由して _enable_nodes(false) に入る経路をソースで確認した
-・tools/run.ps1 で Godot 4.6.1 が起動し scenes/main.tscn と scripts/game/boss.gd の読み込み成功を確認した
+・player.gd の set_gameplay_active で collider と hurtbox の物理プロパティ更新を set_deferred に変更した
+・物理シグナル中の状態変更エラー回避を目的とした最小変更に限定した
+・tools/run.ps1 で起動確認を実施し開始成功を確認した

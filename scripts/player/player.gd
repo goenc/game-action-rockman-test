@@ -50,10 +50,10 @@ func reset_for_stage(spawn_position: Vector2, config: Dictionary) -> void:
 
 func set_gameplay_active(active: bool) -> void:
 	gameplay_active = active
-	collider.disabled = !active
-	hurtbox.monitoring = active
-	hurtbox.monitorable = active
-	hurtbox_shape.disabled = !active
+	collider.set_deferred("disabled", !active)
+	hurtbox.set_deferred("monitoring", active)
+	hurtbox.set_deferred("monitorable", active)
+	hurtbox_shape.set_deferred("disabled", !active)
 	camera.enabled = active
 	if !active:
 		velocity = Vector2.ZERO
