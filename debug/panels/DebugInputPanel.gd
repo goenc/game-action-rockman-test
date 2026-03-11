@@ -13,7 +13,6 @@ func update_input_state(pressed_inputs: Dictionary) -> void:
 	_current_input_label.text = _format_main_input(pressed_keys)
 	_press_count_label.text = "同時押し数 : %d" % pressed_keys.size()
 	_pressed_keys_label.text = _format_pressed_keys(pressed_keys)
-	_event_log_label.text = _format_event_history(event_history)
 
 
 func _sorted_pressed_keys(pressed_inputs: Dictionary) -> Array[String]:

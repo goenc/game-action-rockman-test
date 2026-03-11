@@ -1,0 +1,5 @@
+DebugInputPanelの主表示更新を復旧
+
+・DebugInputPanelのupdate_input_stateからログラベル更新処理を削除し未定義参照エラーを解消
+・入力表示 同時押し数表示 押下中キー表示のみを更新する責務に統一
+・tools/run.ps1による起動確認でlaunch_okを確認
