@@ -11,8 +11,9 @@ enum GameState {
 
 var game_state: GameState = GameState.PLAYING
 var game_config: Dictionary = {}
+var stage = null
 
-@onready var stage = $Stage
+@onready var stage_mount = $StageMount
 @onready var player = $Player
 @onready var hud = $Hud
 @onready var clear_screen = $Clear
@@ -23,6 +24,7 @@ func _ready() -> void:
 	_register_input_map()
 	game_config = _load_json(CONFIG_PATH)
 	_apply_window_settings()
+	_load_stage(_get_game_route().consume_next_stage())
 	stage.setup(self, game_config)
 	stage.attach_player(player)
 	player.setup(self, game_config)
@@ -151,3 +153,19 @@ func _joypad_button(button_index: JoyButton) -> InputEventJoypadButton:
 	var event := InputEventJoypadButton.new()
 	event.button_index = button_index
 	return event
+
+
+func _load_stage(stage_scene_path: String) -> void:
+	for child in stage_mount.get_children():
+		stage_mount.remove_child(child)
+		child.queue_free()
+	var packed_scene := load(stage_scene_path) as PackedScene
+	if packed_scene == null:
+		push_error("Failed to load stage scene: %s" % stage_scene_path)
+		return
+	stage = packed_scene.instantiate()
+	stage_mount.add_child(stage)
+
+
+func _get_game_route() -> Node:
+	return get_node("/root/GameRoute")

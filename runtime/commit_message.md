@@ -1,6 +1,5 @@
-タイトル専用シーン分離とデバッグUI調整
+main をステージ動的ロード対応の本編ルートへ変更した
 
-・タイトル画面を本編シーンから分離し起動専用シーン経由で main.tscn へ遷移する構成に変更
-・main.tscn から Title ノードと GameManager のタイトル状態依存を除去しクリア後はタイトル専用シーンへ戻るよう変更
-・既存の DebugWindow 系シーン調整差分を同一コミットに含めた
-・tools/run.ps1 を Godot 4.6.1 で実行し起動エラーが出ないことを確認
+・main.tscn から Stage 実体を外して StageMount と stage_01 独立シーンへ分離した
+・GameRoute autoload を追加し title_main から次ステージを設定して game_manager が動的生成する構成へ変更した
+・headless 検証と tools/run.ps1 起動でタイトル開始 本編遷移 死亡リスタート クリア後タイトル戻りを確認した

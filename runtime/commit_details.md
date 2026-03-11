@@ -1,9 +1,10 @@
-日時: 2026-03-12 01:15:58 JST
-対象: タイトル専用シーン分離と既存デバッグUI調整
-summary: タイトル画面を本編シーンから分離し起動専用シーン経由で本編へ遷移する構成へ変更した。
+日時: 2026-03-12 01:45:34 JST
+summary: main をステージ動的ロード対応の本編ルートへ変更した
+target: project.godot / scenes/main.tscn / scenes/stages/stage_01.tscn / scripts/game/game_manager.gd / scripts/game/game_route.gd / scripts/ui/title_main.gd
 code_changes:
-・project.godot の起動シーンを scenes/title_main.tscn に変更し scenes/title_main.tscn と scripts/ui/title_main.gd を追加した
-・scenes/main.tscn から Title ノードを削除し scripts/game/game_manager.gd から TITLE 状態と  依存を除去して起動直後に本編開始しクリア後はタイトル専用シーンへ戻るよう変更した
-・既存の debug/DebugWindow.tscn と関連シーンのレイアウト調整差分を同一コミットに含めた
+・main.tscn から Stage 実体を外して StageMount を追加し scenes/stages/stage_01.tscn へ切り出した
+・GameRoute autoload を追加し title_main で次ステージを設定して game_manager が StageMount に動的生成する構成へ変更した
+・死亡時リスタートとクリア後タイトル戻りを生成済み stage 参照のまま維持した
 verification:
-・tools/run.ps1 を Godot 4.6.1 で --debug --quit-after 120 付きで実行し起動エラーなく終了することを確認した
+・godot_console --headless --verbose --path . --script .\\runtime\\route_validation.gd --quit-after 120 --log-file .\\runtime\\route_validation.log でタイトル開始 本編遷移 死亡リスタート クリア後タイトル戻りを確認した
+・tools/run.ps1 の起動成功を確認した

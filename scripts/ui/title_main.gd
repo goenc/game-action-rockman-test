@@ -14,6 +14,7 @@ func _ready() -> void:
 
 func _unhandled_input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_accept"):
+		_get_game_route().set_next_stage("res://scenes/stages/stage_01.tscn")
 		get_tree().change_scene_to_file(MAIN_SCENE_PATH)
 
 
@@ -46,3 +47,7 @@ func _joypad_button(button_index: JoyButton) -> InputEventJoypadButton:
 	var event := InputEventJoypadButton.new()
 	event.button_index = button_index
 	return event
+
+
+func _get_game_route() -> Node:
+	return get_node("/root/GameRoute")
