@@ -17,6 +17,7 @@ var facing := 1.0
 
 @onready var collider: CollisionShape2D = $CollisionShape2D
 @onready var body: Polygon2D = $Body
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hurtbox: Area2D = $Hurtbox
 @onready var hurtbox_shape: CollisionShape2D = $Hurtbox/CollisionShape2D
 @onready var camera: Camera2D = $Camera2D
@@ -105,6 +106,16 @@ func _physics_process(delta: float) -> void:
 	if input_axis != 0.0:
 		facing = sign(input_axis)
 	velocity.x = input_axis * move_speed
+	if abs(velocity.x) < 1.0:
+		if sprite.animation != "idle":
+			sprite.play("idle")
+	else:
+		if sprite.animation != "run":
+			sprite.play("run")
+	if velocity.x < 0.0:
+		sprite.flip_h = true
+	elif velocity.x > 0.0:
+		sprite.flip_h = false
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
 	if Input.is_action_just_pressed("shoot"):
