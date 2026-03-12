@@ -8,7 +8,7 @@ size = Vector2(24, 24)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_touch"]
 size = Vector2(24, 24)
 
-[node name="EnemyTurret" type="Node2D"]
+[node name="EnemyTurret" type="Node2D" groups=["debug_enemy_collision"]]
 visible = false
 script = ExtResource("1_script")
 

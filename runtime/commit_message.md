@@ -1,6 +1,7 @@
-player を AnimatedSprite2D 表示へ切り替え
+当たり判定表示オーバーレイを追加
 
-・player.tscn で idle run jump の SpriteFrames と idle autoplay を設定した
-・player.gd で move_and_slide 後に idle run jump を切り替え、地上移動時のみ flip_h を更新するようにした
-・jump 画像を player_jump.png として追加し、Godot の import と headless 起動を確認した
-・既存の未追跡変更も指示どおり同時にコミットする
+・既存の DebugManager 構成を維持したまま当たり判定表示オーバーレイを追加
+・debug 配下に hitbox オーバーレイと TileMapLayer 外周線ビルダーを追加し プレイヤー 敵 地面を色分け表示できるようにした
+・DebugManager と DebugManagerWindow に入力デバッガー系と独立したヒットボックス表示トグルの入口だけを追加した
+・player enemy boss stage scene に debug 用 group を追加し ゲームロジックを変えずに表示対象を収集できるようにした
+・tools/run.ps1 を起動し 5 秒間の起動確認で Parse Error や起動エラーが出ないことを確認した

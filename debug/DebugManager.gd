@@ -7,8 +7,11 @@ const INPUT_LOG_WINDOW_ID := &"input_log"
 const DEBUG_MANAGER_WINDOW_SCENE := preload("res://debug/manager/debug_manager_window.tscn")
 const INPUT_DEBUG_WINDOW_SCENE := preload("res://debug/windows/input/input_debug_window.tscn")
 const INPUT_LOG_WINDOW_SCENE := preload("res://debug/windows/log/input_log_window.tscn")
+const HITBOX_DEBUG_OVERLAY_SCENE := preload("res://debug/overlays/hitbox/hitbox_debug_overlay.tscn")
 
 var _windows: Dictionary = {}
+var _hitbox_overlay_enabled := false
+var _hitbox_overlay: CanvasItem = null
 
 
 func _ready() -> void:
@@ -27,6 +30,21 @@ func open_input_debugger_window() -> void:
 
 func open_input_log_window() -> void:
 	_show_window(INPUT_LOG_WINDOW_ID)
+
+
+func set_hitbox_overlay_enabled(enabled: bool) -> void:
+	_hitbox_overlay_enabled = enabled
+	var hitbox_overlay := _get_or_create_hitbox_overlay() if enabled else _hitbox_overlay
+	if !is_instance_valid(hitbox_overlay):
+		return
+	hitbox_overlay.visible = enabled
+	var manager_window := _windows.get(MANAGER_WINDOW_ID) as Window
+	if is_instance_valid(manager_window) and manager_window.has_method("set_hitbox_overlay_enabled"):
+		manager_window.call("set_hitbox_overlay_enabled", enabled)
+
+
+func is_hitbox_overlay_enabled() -> bool:
+	return _hitbox_overlay_enabled
 
 
 func _show_window(window_id: StringName) -> void:
@@ -70,7 +88,21 @@ func _configure_window(window_id: StringName, window: Window) -> void:
 		window.connect("open_input_debugger_requested", Callable(self, "open_input_debugger_window"))
 	if window.has_signal("open_input_log_requested"):
 		window.connect("open_input_log_requested", Callable(self, "open_input_log_window"))
+	if window.has_signal("hitbox_overlay_toggled"):
+		window.connect("hitbox_overlay_toggled", Callable(self, "set_hitbox_overlay_enabled"))
+	if window.has_method("set_hitbox_overlay_enabled"):
+		window.call("set_hitbox_overlay_enabled", _hitbox_overlay_enabled)
 
 
 func _on_window_tree_exited(window_id: StringName) -> void:
 	_windows.erase(window_id)
+
+
+func _get_or_create_hitbox_overlay() -> CanvasItem:
+	if is_instance_valid(_hitbox_overlay):
+		return _hitbox_overlay
+	var overlay := HITBOX_DEBUG_OVERLAY_SCENE.instantiate() as CanvasItem
+	get_tree().root.add_child(overlay)
+	overlay.visible = _hitbox_overlay_enabled
+	_hitbox_overlay = overlay
+	return overlay
