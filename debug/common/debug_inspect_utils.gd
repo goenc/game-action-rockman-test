@@ -7,15 +7,24 @@ const FALLBACK_RECT_SIZE := Vector2(20.0, 20.0)
 
 
 static func collect_pick_candidates(viewport: Viewport, world_position: Vector2) -> Array[Dictionary]:
-	if viewport == null or !is_instance_valid(viewport) or viewport.world_2d == null:
+	if viewport == null or !is_instance_valid(viewport):
+		return []
+	var world_2d := viewport.find_world_2d()
+	if world_2d == null:
 		return []
 	var parameters := PhysicsPointQueryParameters2D.new()
 	parameters.position = world_position
 	parameters.collide_with_areas = true
 	parameters.collide_with_bodies = true
 	parameters.collision_mask = DEFAULT_COLLISION_MASK
-	var results := viewport.world_2d.direct_space_state.intersect_point(parameters, MAX_POINT_RESULTS)
+	var results := world_2d.direct_space_state.intersect_point(parameters, MAX_POINT_RESULTS)
 	return _build_candidates(results, world_position)
+
+
+static func viewport_position_to_world(viewport: Viewport, viewport_position: Vector2) -> Vector2:
+	if viewport == null or !is_instance_valid(viewport):
+		return viewport_position
+	return viewport.get_canvas_transform().affine_inverse() * viewport_position
 
 
 static func build_common_inspect_data(target: Node) -> Dictionary:

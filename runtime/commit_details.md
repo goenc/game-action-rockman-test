@@ -1,10 +1,11 @@
-日時: 2026-03-12 22:55:49 JST
-summary: object_inspector の起動時パースエラーを解消し DebugManager からの起動とクリック選択フローをローカル実装に合わせて正常化
+日時: 2026-03-12 23:26:39 JST
+対象: object_inspector
+summary: object_inspector の popup 初期表示とクリック選択不全を修正
 code_changes:
-・debug_inspect_utils.gd の parse error と型推論エラーを解消し 候補正規化と AnimatedSprite2D の強調範囲計算を安全化
-・object_inspector_window.gd と object_pick_popup.gd の class_name 依存型注釈を外し 候補取得 0件1件複数件分岐 選択確定 選択解除を has_method ベースで安定化
-・debug_select_overlay.gd でクリック座標を canvas transform からワールド座標へ変換し overlay 表示の z_index 上限超過も修正
+・pick popup を scene と _ready の両方で初期非表示にし、複数候補時のみ表示するように修正した
+・selection overlay の入力取得を _input ベースへ切り替え、メインゲーム window のクリックを確実に拾うように修正した
+・候補収集で Viewport.find_world_2d() を使うようにし、ゲーム描画先の world からプレイヤー候補を取得できるように修正した
 verification:
-・godot_console --path . --headless --verbose --quit-after 5 で起動時 parse error が出ないことを確認
-・一時 headless 検証スクリプトで DebugManager から object inspector 起動 プレイヤー単体選択 複数候補ポップアップ再選択 選択対象削除時の解除を確認
-・tools/run.ps1 の起動が 5 秒以上維持されることを確認
+・godot_console --headless --path . --quit-after 1 で parse error が出ないことを確認した
+・tools/run.ps1 を 5 秒起動し、起動直後に終了せず継続起動できることを確認した
+・headless の smoke test で popup 初期非表示、プレイヤー候補取得、選択後の panel 表示と overlay 更新を確認した

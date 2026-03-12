@@ -18,12 +18,15 @@ func _ready() -> void:
 	top_level = true
 	z_as_relative = false
 	z_index = 4096
+	visible = false
+	set_process_input(false)
 	set_process_unhandled_input(false)
 
 
 func set_monitoring_enabled(enabled: bool) -> void:
 	_monitoring_enabled = enabled
-	set_process_unhandled_input(enabled)
+	set_process_input(enabled)
+	set_process_unhandled_input(false)
 	visible = enabled and is_instance_valid(_selected_target)
 	queue_redraw()
 
@@ -45,7 +48,7 @@ func _process(_delta: float) -> void:
 		queue_redraw()
 
 
-func _unhandled_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	if !_monitoring_enabled:
 		return
 	if !(event is InputEventMouseButton):
@@ -54,7 +57,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if mouse_event.button_index != MOUSE_BUTTON_LEFT or !mouse_event.pressed:
 		return
 	var screen_position: Vector2 = mouse_event.position
-	world_point_clicked.emit(_screen_to_world(screen_position), screen_position)
+	if mouse_event.window_id != get_window().get_window_id():
+		return
+	world_point_clicked.emit(DEBUG_INSPECT_UTILS.viewport_position_to_world(get_viewport(), screen_position), screen_position)
 
 
 func _draw() -> void:
@@ -67,10 +72,3 @@ func _draw() -> void:
 	var anchor := geometry.get("anchor", Vector2.ZERO) as Vector2
 	draw_line(anchor + Vector2(-CROSS_SIZE, 0.0), anchor + Vector2(CROSS_SIZE, 0.0), CROSS_COLOR, LINE_WIDTH)
 	draw_line(anchor + Vector2(0.0, -CROSS_SIZE), anchor + Vector2(0.0, CROSS_SIZE), CROSS_COLOR, LINE_WIDTH)
-
-
-func _screen_to_world(screen_position: Vector2) -> Vector2:
-	var viewport := get_viewport()
-	if viewport == null:
-		return screen_position
-	return viewport.get_canvas_transform().affine_inverse() * screen_position

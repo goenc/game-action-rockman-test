@@ -10,6 +10,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	title = "Object Pick"
 	close_requested.connect(hide)
+	hide()
 	if _pick_panel != null and _pick_panel.has_signal("candidate_selected"):
 		_pick_panel.candidate_selected.connect(_on_pick_panel_candidate_selected)
 	if _pick_panel != null and _pick_panel.has_signal("cancel_requested"):
@@ -18,6 +19,9 @@ func _ready() -> void:
 
 func present_candidates(candidates: Array[Dictionary], popup_position: Vector2i) -> void:
 	if _pick_panel == null or !_pick_panel.has_method("set_candidates"):
+		return
+	if candidates.size() < 2:
+		hide()
 		return
 	_pick_panel.call("set_candidates", candidates)
 	position = popup_position

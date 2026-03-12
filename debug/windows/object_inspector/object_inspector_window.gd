@@ -65,6 +65,10 @@ func _ensure_overlay() -> void:
 		return
 	_select_overlay = DEBUG_SELECT_OVERLAY.new()
 	get_tree().root.add_child(_select_overlay)
+	if _select_overlay.has_method("set_monitoring_enabled"):
+		_select_overlay.call("set_monitoring_enabled", false)
+	if _select_overlay.has_method("clear_selected_target"):
+		_select_overlay.call("clear_selected_target")
 	if _select_overlay.has_signal("world_point_clicked"):
 		_select_overlay.world_point_clicked.connect(_on_world_point_clicked)
 
@@ -74,6 +78,7 @@ func _ensure_pick_popup() -> void:
 		return
 	_pick_popup = OBJECT_PICK_POPUP_SCENE.instantiate()
 	get_tree().root.add_child(_pick_popup)
+	_hide_pick_popup()
 	if _pick_popup.has_signal("candidate_selected"):
 		_pick_popup.candidate_selected.connect(_on_pick_popup_candidate_selected)
 
@@ -182,6 +187,9 @@ func _hide_pick_popup() -> void:
 
 
 func _get_pick_viewport() -> Viewport:
+	var pick_window := _get_pick_window()
+	if is_instance_valid(pick_window):
+		return pick_window.get_viewport()
 	if is_instance_valid(_select_overlay):
 		return _select_overlay.get_viewport()
 	return get_tree().root
