@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/player/player_bullet.tscn" id="2_bullet"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" path="res://assets/player/player_run_1.png" id="4_run_1"]
 [ext_resource type="Texture2D" path="res://assets/player/player_run_2.png" id="5_run_2"]
 [ext_resource type="Texture2D" path="res://assets/player/player_run_3.png" id="6_run_3"]
+[ext_resource type="Texture2D" path="res://assets/player/player_jump.png" id="7_jump"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
 size = Vector2(24, 28)
@@ -36,6 +37,14 @@ animations = [{
 "loop": true,
 "name": &"run",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_jump")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 6.0
 }]
 
 [node name="Player" type="CharacterBody2D"]
@@ -50,6 +59,7 @@ disabled = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_player")
 animation = &"idle"
+autoplay = &"idle"
 
 [node name="Hurtbox" type="Area2D" parent="."]
 collision_layer = 16

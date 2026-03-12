@@ -105,18 +105,21 @@ func _physics_process(delta: float) -> void:
 	if input_axis != 0.0:
 		facing = sign(input_axis)
 	velocity.x = input_axis * move_speed
-	var target_animation := &"run" if absf(velocity.x) >= 1.0 else &"idle"
-	if sprite.animation != target_animation:
-		sprite.play(target_animation)
-	if velocity.x < 0.0:
-		sprite.flip_h = true
-	elif velocity.x > 0.0:
-		sprite.flip_h = false
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
 	if Input.is_action_just_pressed("shoot"):
 		_try_shoot()
 	move_and_slide()
+	var on_floor := is_on_floor()
+	var target_animation := &"jump"
+	if on_floor:
+		target_animation = &"run" if absf(velocity.x) >= 1.0 else &"idle"
+		if velocity.x < 0.0:
+			sprite.flip_h = true
+		elif velocity.x > 0.0:
+			sprite.flip_h = false
+	if sprite.animation != target_animation:
+		sprite.play(target_animation)
 
 
 func _apply_config(config: Dictionary) -> void:

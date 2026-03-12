@@ -1,10 +1,10 @@
-日時: 2026-03-12 20:34:18 JST
-summary:
-player の表示を AnimatedSprite2D ベースへ揃え、停止時と移動時のアニメーション切替が成立する状態にした
-code_changes:
-・player.tscn から仮表示用の Polygon2D Body を削除し、既存の AnimatedSprite2D と SpriteFrames を表示ノードとして残した
-・player.gd の onready 参照を AnimatedSprite2D に統一し、速度に応じて idle と run を切り替えつつ同一 animation の再生を抑止した
-・player.gd の _apply_size から Polygon2D 更新を削除し、当たり判定サイズの更新だけを維持した
-verification:
-・assets/player/player_idle.png と assets/player/player_run_1.png から assets/player/player_run_3.png の実在を確認した
-・tools/run.ps1 で Godot Engine 4.6.1 の起動を確認し、初期化エラーが出ていないことを確認した
+日時: 2026-03-12 20:59:14 +09:00
+対象: player の表示を AnimatedSprite2D 化し idle run jump を切り替える対応
+変更:
+・player.tscn の AnimatedSprite2D に idle run jump の SpriteFrames と idle autoplay を設定した
+・player.gd の _physics_process で move_and_slide 後に地上判定を見て idle run jump を切り替え、地上移動時のみ flip_h を更新するようにした
+・jump 画像を player_jump.png として追加し、Godot で import 可能な状態にした
+確認:
+・tools/run.ps1 は起動後 15 秒間継続し、即時エラーなく立ち上がることを確認した
+・godot_console --headless --path . --import --quit が終了コード 0 で完了した
+・godot_console --headless --path . --quit-after 5 が終了コード 0 で完了した
