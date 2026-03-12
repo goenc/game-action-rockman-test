@@ -1,9 +1,10 @@
-日時: 2026-03-12 22:26:09 JST
-summary: デバッグ管理画面から起動できるオブジェクトインスペクターを追加した
-対象: debug
+日時: 2026-03-12 22:55:49 JST
+summary: object_inspector の起動時パースエラーを解消し DebugManager からの起動とクリック選択フローをローカル実装に合わせて正常化
 code_changes:
-・DebugManager と debug manager window に object inspector の別ウィンドウ導線を追加した
-・クリック位置の物理問い合わせと候補選択ポップアップを object_inspector 配下へ追加した
-・詳細表示パネルと選択強調オーバーレイと自動解除更新を実装した
+・debug_inspect_utils.gd の parse error と型推論エラーを解消し 候補正規化と AnimatedSprite2D の強調範囲計算を安全化
+・object_inspector_window.gd と object_pick_popup.gd の class_name 依存型注釈を外し 候補取得 0件1件複数件分岐 選択確定 選択解除を has_method ベースで安定化
+・debug_select_overlay.gd でクリック座標を canvas transform からワールド座標へ変換し overlay 表示の z_index 上限超過も修正
 verification:
-・tools/run.ps1 で Godot を起動し Debug Manager ウィンドウが立ち上がることを確認した
+・godot_console --path . --headless --verbose --quit-after 5 で起動時 parse error が出ないことを確認
+・一時 headless 検証スクリプトで DebugManager から object inspector 起動 プレイヤー単体選択 複数候補ポップアップ再選択 選択対象削除時の解除を確認
+・tools/run.ps1 の起動が 5 秒以上維持されることを確認

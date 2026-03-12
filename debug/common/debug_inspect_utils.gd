@@ -127,15 +127,16 @@ static func _build_candidates(results: Array, click_world_position: Vector2) -> 
 static func _build_candidate(target_node: Node, source_node: Node, click_world_position: Vector2) -> Dictionary:
 	var summary := _build_pick_summary(target_node, source_node)
 	var display_name := str(summary.get("display_name", target_node.name))
-	var class_name := str(summary.get("class_name", target_node.get_class()))
+	var class_label := str(summary.get("class_name", target_node.get_class()))
 	var owner_name := str(summary.get("owner_name", ""))
-	var world_position := summary.get("world_position", _get_global_position(target_node))
-	if !(world_position is Vector2):
-		world_position = _get_global_position(target_node)
+	var world_position: Vector2 = _get_global_position(target_node)
+	var summary_world_position = summary.get("world_position", world_position)
+	if summary_world_position is Vector2:
+		world_position = summary_world_position
 	return {
 		"target": target_node,
 		"display_name": display_name,
-		"class_name": class_name,
+		"class_name": class_label,
 		"node_path": str(summary.get("node_path", target_node.get_path())),
 		"world_position": world_position,
 		"world_position_text": _format_vector2(world_position),
@@ -180,18 +181,57 @@ static func _display_name_for(target_node: Node) -> String:
 
 
 static func _resolve_pick_target(source_node: Node) -> Node:
+	if !is_instance_valid(source_node):
+		return null
+	var hinted_owner := _resolve_pick_owner_hint(source_node)
+	if is_instance_valid(hinted_owner):
+		return hinted_owner
 	var current := source_node
-	if current is Area2D:
-		var parent := current.get_parent()
-		if _is_pick_owner_candidate(parent):
-			current = parent
-	return current
+	var fallback := source_node
+	if source_node is Area2D:
+		current = source_node.get_parent()
+	while is_instance_valid(current):
+		if _is_preferred_pick_target(current):
+			return current
+		if _is_pick_owner_candidate(current):
+			fallback = current
+		var current_owner := current.owner
+		if is_instance_valid(current_owner) and _is_preferred_pick_target(current_owner):
+			return current_owner
+		current = current.get_parent()
+	return fallback
+
+
+static func _resolve_pick_owner_hint(source_node: Node) -> Node:
+	var current := source_node
+	while is_instance_valid(current):
+		for meta_key in [&"debug_pick_owner", &"player_owner"]:
+			if current.has_meta(meta_key):
+				var target = current.get_meta(meta_key)
+				if target is Node and is_instance_valid(target):
+					return target
+		current = current.get_parent()
+	return null
+
+
+static func _is_preferred_pick_target(node: Node) -> bool:
+	if !is_instance_valid(node):
+		return false
+	if node is CollisionObject2D and !(node is Area2D):
+		return true
+	if node is TileMapLayer:
+		return true
+	if node.has_method("get_debug_pick_summary") or node.has_method("get_debug_inspect_data"):
+		return true
+	if !node.scene_file_path.is_empty():
+		return true
+	return node.get_script() != null and !(node is CollisionShape2D)
 
 
 static func _is_pick_owner_candidate(node: Node) -> bool:
 	if !is_instance_valid(node):
 		return false
-	return node is CollisionObject2D or !node.scene_file_path.is_empty() or node.get_script() != null
+	return node is CollisionObject2D or node is TileMapLayer or !node.scene_file_path.is_empty() or node.get_script() != null
 
 
 static func _priority_for(node: Node) -> int:
@@ -253,7 +293,8 @@ static func _collect_collision_shape_points(collision_shape: CollisionShape2D, p
 	var transform_2d := collision_shape.global_transform
 	var shape := collision_shape.shape
 	if shape is RectangleShape2D:
-		var half_size := shape.size * 0.5
+		var rectangle_shape := shape as RectangleShape2D
+		var half_size: Vector2 = rectangle_shape.size * 0.5
 		_append_points(points, transform_2d, PackedVector2Array([
 			Vector2(-half_size.x, -half_size.y),
 			Vector2(half_size.x, -half_size.y),
@@ -261,7 +302,8 @@ static func _collect_collision_shape_points(collision_shape: CollisionShape2D, p
 			Vector2(-half_size.x, half_size.y),
 		]))
 	elif shape is CircleShape2D:
-		var radius := shape.radius
+		var circle_shape := shape as CircleShape2D
+		var radius: float = circle_shape.radius
 		_append_points(points, transform_2d, PackedVector2Array([
 			Vector2(-radius, 0.0),
 			Vector2(radius, 0.0),
@@ -269,8 +311,9 @@ static func _collect_collision_shape_points(collision_shape: CollisionShape2D, p
 			Vector2(0.0, radius),
 		]))
 	elif shape is CapsuleShape2D:
-		var radius := shape.radius
-		var half_height := maxf(shape.height * 0.5, radius)
+		var capsule_shape := shape as CapsuleShape2D
+		var radius: float = capsule_shape.radius
+		var half_height := maxf(capsule_shape.height * 0.5, radius)
 		_append_points(points, transform_2d, PackedVector2Array([
 			Vector2(-radius, -half_height),
 			Vector2(radius, -half_height),
@@ -306,9 +349,15 @@ static func _collect_sprite_points(sprite: Sprite2D, points: PackedVector2Array)
 
 
 static func _collect_animated_sprite_points(sprite: AnimatedSprite2D, points: PackedVector2Array) -> void:
-	var rect := sprite.get_rect()
-	if rect.size == Vector2.ZERO:
+	if sprite.sprite_frames == null or !sprite.sprite_frames.has_animation(sprite.animation):
 		return
+	var frame_texture := sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
+	if frame_texture == null:
+		return
+	var frame_size := frame_texture.get_size()
+	var rect := Rect2(sprite.offset, frame_size)
+	if sprite.centered:
+		rect.position -= frame_size * 0.5
 	_append_rect_points(points, sprite.global_transform, rect)
 
 
@@ -316,8 +365,8 @@ static func _collect_tile_map_points(tile_map_layer: TileMapLayer, points: Packe
 	var used_rect := tile_map_layer.get_used_rect()
 	if used_rect.size == Vector2i.ZERO or tile_map_layer.tile_set == null:
 		return
-	var tile_size := tile_map_layer.tile_set.tile_size
-	var rect := Rect2(Vector2(used_rect.position) * tile_size, Vector2(used_rect.size) * tile_size)
+	var tile_size := Vector2(tile_map_layer.tile_set.tile_size)
+	var rect: Rect2 = Rect2(Vector2(used_rect.position) * tile_size, Vector2(used_rect.size) * tile_size)
 	_append_rect_points(points, tile_map_layer.global_transform, rect)
 
 
