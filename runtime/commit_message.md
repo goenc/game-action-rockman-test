@@ -1,9 +1,8 @@
-プレイヤー画像と移動アニメーションを追加
+player 表示を AnimatedSprite2D に置き換え
 
-・追加したプレイヤー画像アセットをプロジェクトに反映した。
-・assets/player に player_idle.png と player_run_1.png から player_run_3.png を追加した。
-・godot_console を --path . で起動し5秒間の起動確認後に終了して起動可能であることを確認した。
-・player の横移動状態に応じて idle と run のアニメーションを切り替える処理を実装した。
-・player.tscn に AnimatedSprite2D と SpriteFrames を追加し idle と run のアニメーションを設定した。
-・player.gd の _physics_process で velocity.x に応じた idle と run の切替と左右反転を追加し同一アニメーションの再生連打を防止した。
-・tools/run.ps1 で Godot Engine v4.6.1.stable.official.14d19694e が起動し D3D12 初期化まで進むことを確認した。
+・player の表示を AnimatedSprite2D ベースへ揃え、停止時と移動時のアニメーション切替が成立する状態にした
+・player.tscn から仮表示用の Polygon2D Body を削除し、既存の AnimatedSprite2D と SpriteFrames を表示ノードとして残した
+・player.gd の onready 参照を AnimatedSprite2D に統一し、速度に応じて idle と run を切り替えつつ同一 animation の再生を抑止した
+・player.gd の _apply_size から Polygon2D 更新を削除し、当たり判定サイズの更新だけを維持した
+・assets/player/player_idle.png と assets/player/player_run_1.png から assets/player/player_run_3.png の実在を確認した
+・tools/run.ps1 で Godot Engine 4.6.1 の起動を確認し、初期化エラーが出ていないことを確認した

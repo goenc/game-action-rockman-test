@@ -47,10 +47,6 @@ script = ExtResource("1_script")
 shape = SubResource("RectangleShape2D_body")
 disabled = true
 
-[node name="Body" type="Polygon2D" parent="."]
-polygon = PackedVector2Array(-12, -14, 12, -14, 12, 14, -12, 14)
-color = Color(0.22, 0.48, 0.9, 1)
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_player")
 animation = &"idle"

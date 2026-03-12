@@ -16,7 +16,6 @@ var invincible_remaining := 0.0
 var facing := 1.0
 
 @onready var collider: CollisionShape2D = $CollisionShape2D
-@onready var body: Polygon2D = $Body
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hurtbox: Area2D = $Hurtbox
 @onready var hurtbox_shape: CollisionShape2D = $Hurtbox/CollisionShape2D
@@ -106,12 +105,9 @@ func _physics_process(delta: float) -> void:
 	if input_axis != 0.0:
 		facing = sign(input_axis)
 	velocity.x = input_axis * move_speed
-	if abs(velocity.x) < 1.0:
-		if sprite.animation != "idle":
-			sprite.play("idle")
-	else:
-		if sprite.animation != "run":
-			sprite.play("run")
+	var target_animation := &"run" if absf(velocity.x) >= 1.0 else &"idle"
+	if sprite.animation != target_animation:
+		sprite.play(target_animation)
 	if velocity.x < 0.0:
 		sprite.flip_h = true
 	elif velocity.x > 0.0:
@@ -150,10 +146,3 @@ func _apply_size(size: Vector2) -> void:
 	var hurt_shape := hurtbox_shape.shape as RectangleShape2D
 	if hurt_shape != null:
 		hurt_shape.size = size
-	body.polygon = PackedVector2Array([
-		Vector2(-size.x * 0.5, -size.y * 0.5),
-		Vector2(size.x * 0.5, -size.y * 0.5),
-		Vector2(size.x * 0.5, size.y * 0.5),
-		Vector2(-size.x * 0.5, size.y * 0.5),
-	])
-	body.color = Color(0.22, 0.48, 0.9)
