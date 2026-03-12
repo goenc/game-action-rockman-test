@@ -1,5 +1,5 @@
-player.gd の物理プロパティ更新を deferred 化
+デバッグ管理画面から個別デバッグウィンドウを開く構成へ整理
 
-・player.gd の set_gameplay_active で collider と hurtbox の物理プロパティ更新を set_deferred に変更した
-・物理シグナル中の状態変更エラー回避を目的とした最小変更に限定した
-・tools/run.ps1 で起動確認を実施し開始成功を確認した
+・DebugManager を管理画面と各デバッグウィンドウの生成、再表示、参照保持に限定
+・Input Debugger と Input Log を別ウィンドウへ移設し既存 panel を流用
+・入力状態と履歴を DebugInputData AutoLoad に分離し tools/run.ps1 で起動確認

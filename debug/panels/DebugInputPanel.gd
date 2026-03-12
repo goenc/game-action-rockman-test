@@ -3,16 +3,9 @@ extends Control
 const EMPTY_MAIN_INPUT_TEXT := "入力 : なし"
 const EMPTY_PRESSED_KEYS_TEXT := "押下中キー : なし"
 
-signal show_input_log_requested
-
 @onready var _current_input_label: Label = $InputGroup/CurrentInputLabel
 @onready var _press_count_label: Label = $InputGroup/PressCountLabel
 @onready var _pressed_keys_label: Label = $InputGroup/PressedKeysLabel
-@onready var _input_log_button: Button = $InputGroup/InputLogButton
-
-
-func _ready() -> void:
-	_input_log_button.pressed.connect(_on_input_log_button_pressed)
 
 
 func update_input_state(pressed_inputs: Dictionary) -> void:
@@ -44,7 +37,3 @@ func _format_pressed_keys(pressed_keys: Array[String]) -> String:
 	if pressed_keys.is_empty():
 		return EMPTY_PRESSED_KEYS_TEXT
 	return "押下中キー : %s" % ", ".join(pressed_keys)
-
-
-func _on_input_log_button_pressed() -> void:
-	show_input_log_requested.emit()

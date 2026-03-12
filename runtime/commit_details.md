@@ -1,8 +1,8 @@
-日時: 2026-03-12 03:09:39 JST
-summary: player.gd の物理プロパティ変更を deferred 化して物理シグナル中の状態変更エラーを回避した
-target: scripts/player/player.gd
-code_changes:
-・set_gameplay_active の collider disabled と hurtbox monitoring monitorable と hurtbox_shape disabled を set_deferred に置換した
-verification:
-・tools/run.ps1 で起動確認を実施し開始成功を確認した
-
+日時: 2026-03-12 16:38:14 JST
+対象: デバッグ管理画面経由の個別デバッグウィンドウ化
+変更:
+・DebugManager を管理画面と機能ウィンドウの生成、再表示、参照保持に限定し、管理画面ウィンドウを追加した
+・Input Debugger と Input Log を debug/windows 配下へ移設し、既存 panel を流用して単独責務の別ウィンドウに整理した
+・入力状態と入力履歴の保持を DebugInputData AutoLoad に分離し、起動時は Debug Manager のみ表示するよう project.godot を更新した
+確認:
+・tools/run.ps1 で起動し、8 秒間の起動維持とエラーログなしを確認した

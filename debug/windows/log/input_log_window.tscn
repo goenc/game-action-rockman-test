@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://cdw4mv3qked0k"]
 
-[ext_resource type="Script" uid="uid://cdil0yk1e4fie" path="res://debug/DebugLogWindow.gd" id="1_window_script"]
+[ext_resource type="Script" path="res://debug/windows/log/input_log_window.gd" id="1_window_script"]
 [ext_resource type="PackedScene" path="res://debug/panels/DebugLogPanel.tscn" id="2_log_panel"]
 
-[node name="DebugLogWindow" type="Window" unique_id=856244544]
+[node name="InputLogWindow" type="Window" unique_id=856244544]
 oversampling_override = 1.0
 title = "Input Log"
 initial_position = 2

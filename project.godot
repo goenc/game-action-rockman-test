@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+DebugInputData="*res://debug/services/input_debug_data.gd"
 DebugManager="*res://debug/DebugManager.gd"
 GameRoute="*res://scripts/game/game_route.gd"
 
