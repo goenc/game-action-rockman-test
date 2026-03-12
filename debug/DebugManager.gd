@@ -3,10 +3,12 @@ extends Node
 const MANAGER_WINDOW_ID := &"manager"
 const INPUT_DEBUGGER_WINDOW_ID := &"input_debugger"
 const INPUT_LOG_WINDOW_ID := &"input_log"
+const OBJECT_INSPECTOR_WINDOW_ID := &"object_inspector"
 
 const DEBUG_MANAGER_WINDOW_SCENE := preload("res://debug/manager/debug_manager_window.tscn")
 const INPUT_DEBUG_WINDOW_SCENE := preload("res://debug/windows/input/input_debug_window.tscn")
 const INPUT_LOG_WINDOW_SCENE := preload("res://debug/windows/log/input_log_window.tscn")
+const OBJECT_INSPECTOR_WINDOW_SCENE := preload("res://debug/windows/object_inspector/object_inspector_window.tscn")
 const HITBOX_DEBUG_OVERLAY_SCENE := preload("res://debug/overlays/hitbox/hitbox_debug_overlay.tscn")
 
 var _windows: Dictionary = {}
@@ -30,6 +32,10 @@ func open_input_debugger_window() -> void:
 
 func open_input_log_window() -> void:
 	_show_window(INPUT_LOG_WINDOW_ID)
+
+
+func open_object_inspector_window() -> void:
+	_show_window(OBJECT_INSPECTOR_WINDOW_ID)
 
 
 func set_hitbox_overlay_enabled(enabled: bool) -> void:
@@ -78,6 +84,8 @@ func _scene_for_window(window_id: StringName) -> PackedScene:
 			return INPUT_DEBUG_WINDOW_SCENE
 		INPUT_LOG_WINDOW_ID:
 			return INPUT_LOG_WINDOW_SCENE
+		OBJECT_INSPECTOR_WINDOW_ID:
+			return OBJECT_INSPECTOR_WINDOW_SCENE
 	return null
 
 
@@ -88,6 +96,8 @@ func _configure_window(window_id: StringName, window: Window) -> void:
 		window.connect("open_input_debugger_requested", Callable(self, "open_input_debugger_window"))
 	if window.has_signal("open_input_log_requested"):
 		window.connect("open_input_log_requested", Callable(self, "open_input_log_window"))
+	if window.has_signal("open_object_inspector_requested"):
+		window.connect("open_object_inspector_requested", Callable(self, "open_object_inspector_window"))
 	if window.has_signal("hitbox_overlay_toggled"):
 		window.connect("hitbox_overlay_toggled", Callable(self, "set_hitbox_overlay_enabled"))
 	if window.has_method("set_hitbox_overlay_enabled"):

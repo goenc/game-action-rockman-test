@@ -1,0 +1,58 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://debug/panels/object_inspector/object_inspector_panel.gd" id="1_panel_script"]
+
+[node name="ObjectInspectorPanel" type="Control"]
+layout_mode = 3
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+mouse_filter = 2
+script = ExtResource("1_panel_script")
+
+[node name="StatusLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 8.0
+offset_right = 374.0
+offset_bottom = 28.0
+theme_override_font_sizes/font_size = 11
+text = "対象なし"
+autowrap_mode = 3
+
+[node name="CommonTitleLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 36.0
+offset_right = 178.0
+offset_bottom = 54.0
+theme_override_font_sizes/font_size = 11
+text = "Common"
+
+[node name="CommonInfoText" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 56.0
+offset_right = 374.0
+offset_bottom = 214.0
+editable = false
+wrap_mode = 1
+
+[node name="ExtraTitleLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 222.0
+offset_right = 178.0
+offset_bottom = 240.0
+theme_override_font_sizes/font_size = 11
+text = "Extended"
+
+[node name="ExtraInfoText" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 242.0
+offset_right = 374.0
+offset_bottom = 390.0
+editable = false
+wrap_mode = 1

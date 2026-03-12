@@ -3,10 +3,12 @@ class_name DebugManagerWindow
 
 signal open_input_debugger_requested
 signal open_input_log_requested
+signal open_object_inspector_requested
 signal hitbox_overlay_toggled(enabled: bool)
 
 @onready var _open_input_debugger_button: Button = $FeatureButtons/OpenInputDebuggerButton
 @onready var _open_input_log_button: Button = $FeatureButtons/OpenInputLogButton
+@onready var _open_object_inspector_button: Button = $FeatureButtons/OpenObjectInspectorButton
 @onready var _toggle_hitbox_overlay_button: Button = $FeatureButtons/ToggleHitboxOverlayButton
 
 
@@ -16,6 +18,7 @@ func _ready() -> void:
 	close_requested.connect(hide)
 	_open_input_debugger_button.pressed.connect(_on_open_input_debugger_button_pressed)
 	_open_input_log_button.pressed.connect(_on_open_input_log_button_pressed)
+	_open_object_inspector_button.pressed.connect(_on_open_object_inspector_button_pressed)
 	_toggle_hitbox_overlay_button.toggled.connect(_on_toggle_hitbox_overlay_button_toggled)
 	_move_near_main_window()
 
@@ -33,6 +36,10 @@ func _on_open_input_debugger_button_pressed() -> void:
 
 func _on_open_input_log_button_pressed() -> void:
 	open_input_log_requested.emit()
+
+
+func _on_open_object_inspector_button_pressed() -> void:
+	open_object_inspector_requested.emit()
 
 
 func set_hitbox_overlay_enabled(enabled: bool) -> void:
