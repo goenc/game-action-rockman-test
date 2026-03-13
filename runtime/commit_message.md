@@ -1,5 +1,7 @@
-Player弾を独立ノード化して追従しないよう修正
+Object Inspector のスクロール位置復元を追加
 
-・Player配下の常駐弾を廃止し PackedScene 生成と current_bullet 管理で 1発制限を維持するよう変更
-・Stage に PlayerBullets 配置先を追加し 発射済み弾を Stage 配下の独立オブジェクトとして扱うよう変更
-・弾の消滅時に despawned と queue_free で参照と実体を解放し tools/run.ps1 の起動でエラーなしを確認
+・Object Inspector の TextEdit 再代入を差分更新にしてスクロール位置が戻る不具合を修正
+・Common と Extended の表示文字列をローカル変数に保持した
+・TextEdit の既存文字列と差分がある場合のみ text を再代入するようにした
+・再代入時に scroll_vertical を保存して代入後に復元するようにした
+・tools/run.ps1 を5秒間起動し異常終了しないことを確認

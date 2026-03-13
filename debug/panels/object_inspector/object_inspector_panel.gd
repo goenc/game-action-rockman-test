@@ -38,9 +38,17 @@ func update_target(target: Node) -> void:
 		return
 	_status_label.text = "選択中 : %s" % DEBUG_INSPECT_UTILS.build_target_title(target)
 	var summary_data := DEBUG_INSPECT_UTILS.build_summary_inspect_data(target)
+	var common_text := DEBUG_INSPECT_UTILS.format_dictionary(DEBUG_INSPECT_UTILS.build_common_inspect_data(target))
+	var extra_text := DEBUG_INSPECT_UTILS.format_dictionary(DEBUG_INSPECT_UTILS.build_extra_inspect_data(target))
 	_apply_summary_data(summary_data)
-	_common_text.text = DEBUG_INSPECT_UTILS.format_dictionary(DEBUG_INSPECT_UTILS.build_common_inspect_data(target))
-	_extra_text.text = DEBUG_INSPECT_UTILS.format_dictionary(DEBUG_INSPECT_UTILS.build_extra_inspect_data(target))
+	if _common_text.text != common_text:
+		var common_scroll_vertical := _common_text.scroll_vertical
+		_common_text.text = common_text
+		_common_text.scroll_vertical = common_scroll_vertical
+	if _extra_text.text != extra_text:
+		var extra_scroll_vertical := _extra_text.scroll_vertical
+		_extra_text.text = extra_text
+		_extra_text.scroll_vertical = extra_scroll_vertical
 
 
 func _apply_summary_data(summary_data: Dictionary) -> void:
