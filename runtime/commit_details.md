@@ -1,9 +1,12 @@
-日時: 2026-03-13 22:04:17 JST
-summary: Object Inspector の Extended セクションを削除し Common 表示を拡張して日本語化
-対象: debug/panels/object_inspector/object_inspector_panel.gd, debug/panels/object_inspector/object_inspector_panel.tscn, debug/common/debug_inspect_utils.gd
+日時: 2026-03-13 22:45 JST
+対象: debug 機能の限定リファクタリング
+summary: DebugManager と Object Inspector の責務を整理し未使用UI候補の未存在確認を行った
 code_changes:
-・Object Inspector の script から Extended の onready 参照と空表示時の初期化と更新時の生成およびスクロール復元処理を削除した
-・Object Inspector の scene から Extended 見出しとテキスト欄を削除し Common 見出しを共通情報へ変更して表示領域を下方向へ拡張した
-・Common の表示キーを日本語へ変更し値の中身と TextEdit の折り返しおよびスクロール挙動は維持した
+・DebugManager で manager window の signal 接続と hitbox overlay 状態同期を内部関数へ集約した
+・DebugManagerWindow のボタン接続を _connect_feature_buttons() に整理した
+・ObjectInspectorWindow が選択対象管理と inspector 表示データ構築を担い Panel 連携を明確化した
+・ObjectInspectorPanel に表示データ反映用メソッドと common 情報スクロール維持処理を集約した
 verification:
-・tools/run.ps1 を使用して起動を 8 秒間確認し エラーなく起動継続することを確認した
+・rg -n "ExtraTitleLabel|ExtraInfoText" . で候補 UI 名が現行ソースに存在しないことを確認した
+・godot_console --path . --quit-after 60 で起動し parse error と missing node エラーがないことを確認した
+・tools/run.ps1 を再実行し起動が継続することを確認した

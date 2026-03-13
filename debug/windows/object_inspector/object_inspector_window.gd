@@ -5,10 +5,10 @@ const DEBUG_SELECT_OVERLAY := preload("res://debug/common/debug_select_overlay.g
 const OBJECT_PICK_POPUP_SCENE := preload("res://debug/windows/object_inspector/object_pick_popup.tscn")
 const REFRESH_INTERVAL := 0.1
 
-@onready var _inspector_panel = $ObjectInspectorPanel
+@onready var _inspector_panel: ObjectInspectorPanel = $ObjectInspectorPanel
 
-var _pick_popup = null
-var _select_overlay = null
+var _pick_popup: ObjectPickPopup = null
+var _select_overlay: DebugSelectOverlay = null
 var _selected_target: Node = null
 var _refresh_accumulator := 0.0
 var _last_visible_state := false
@@ -27,26 +27,16 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if visible != _last_visible_state:
-		_last_visible_state = visible
-		_sync_active_state()
-	if !visible:
+	_sync_visibility_state()
+	if !_should_refresh_selected_target(delta):
 		return
-	if !_has_valid_selection():
-		if _selected_target != null:
-			_clear_selection()
-		return
-	_refresh_accumulator += delta
-	if _refresh_accumulator < REFRESH_INTERVAL:
-		return
-	_refresh_accumulator = 0.0
 	_update_panel_target(_selected_target)
 
 
 func _exit_tree() -> void:
 	_disconnect_selected_target()
 	if is_instance_valid(_select_overlay):
-		if _select_overlay.has_signal("world_point_clicked") and _select_overlay.world_point_clicked.is_connected(_on_world_point_clicked):
+		if _select_overlay.world_point_clicked.is_connected(_on_world_point_clicked):
 			_select_overlay.world_point_clicked.disconnect(_on_world_point_clicked)
 		_select_overlay.queue_free()
 	if is_instance_valid(_pick_popup):
@@ -63,29 +53,25 @@ func _move_near_main_window() -> void:
 func _ensure_overlay() -> void:
 	if is_instance_valid(_select_overlay):
 		return
-	_select_overlay = DEBUG_SELECT_OVERLAY.new()
+	_select_overlay = DEBUG_SELECT_OVERLAY.new() as DebugSelectOverlay
 	get_tree().root.add_child(_select_overlay)
-	if _select_overlay.has_method("set_monitoring_enabled"):
-		_select_overlay.call("set_monitoring_enabled", false)
-	if _select_overlay.has_method("clear_selected_target"):
-		_select_overlay.call("clear_selected_target")
-	if _select_overlay.has_signal("world_point_clicked"):
-		_select_overlay.world_point_clicked.connect(_on_world_point_clicked)
+	_select_overlay.set_monitoring_enabled(false)
+	_select_overlay.clear_selected_target()
+	_select_overlay.world_point_clicked.connect(_on_world_point_clicked)
 
 
 func _ensure_pick_popup() -> void:
 	if is_instance_valid(_pick_popup):
 		return
-	_pick_popup = OBJECT_PICK_POPUP_SCENE.instantiate()
+	_pick_popup = OBJECT_PICK_POPUP_SCENE.instantiate() as ObjectPickPopup
 	get_tree().root.add_child(_pick_popup)
 	_hide_pick_popup()
-	if _pick_popup.has_signal("candidate_selected"):
-		_pick_popup.candidate_selected.connect(_on_pick_popup_candidate_selected)
+	_pick_popup.candidate_selected.connect(_on_pick_popup_candidate_selected)
 
 
 func _sync_active_state() -> void:
-	if is_instance_valid(_select_overlay) and _select_overlay.has_method("set_monitoring_enabled"):
-		_select_overlay.call("set_monitoring_enabled", visible)
+	if is_instance_valid(_select_overlay):
+		_select_overlay.set_monitoring_enabled(visible)
 	if visible and _has_valid_selection():
 		_set_overlay_target(_selected_target)
 	else:
@@ -105,14 +91,18 @@ func _on_world_point_clicked(world_position: Vector2, screen_position: Vector2) 
 	if candidates.size() == 1:
 		_select_candidate(candidates[0])
 		return
-	if is_instance_valid(_pick_popup) and _pick_popup.has_method("present_candidates"):
-		_pick_popup.call("present_candidates", candidates, _build_popup_position(screen_position))
+	if is_instance_valid(_pick_popup):
+		_pick_popup.present_candidates(candidates, _build_popup_position(screen_position))
 
 
 func _select_candidate(candidate: Dictionary) -> void:
 	var target := candidate.get("target") as Node
 	if !is_instance_valid(target):
 		return
+	_set_selected_target(target)
+
+
+func _set_selected_target(target: Node) -> void:
 	_disconnect_selected_target()
 	_selected_target = target
 	_selected_target.tree_exited.connect(_on_selected_target_tree_exited)
@@ -157,33 +147,65 @@ func _on_selected_target_tree_exited() -> void:
 
 
 func _show_empty_panel() -> void:
-	if _inspector_panel != null and _inspector_panel.has_method("show_empty"):
-		_inspector_panel.call("show_empty")
+	if _inspector_panel != null:
+		_inspector_panel.show_empty()
 
 
 func _show_panel_target(target: Node) -> void:
-	if _inspector_panel != null and _inspector_panel.has_method("show_target"):
-		_inspector_panel.call("show_target", target)
+	_apply_panel_target(target, false)
 
 
 func _update_panel_target(target: Node) -> void:
-	if _inspector_panel != null and _inspector_panel.has_method("update_target"):
-		_inspector_panel.call("update_target", target)
+	_apply_panel_target(target, true)
+
+
+func _apply_panel_target(target: Node, update_existing: bool) -> void:
+	if _inspector_panel == null:
+		return
+	var status_text := "選択中 : %s" % DEBUG_INSPECT_UTILS.build_target_title(target)
+	var summary_data := DEBUG_INSPECT_UTILS.build_summary_inspect_data(target)
+	var registered_images := DEBUG_INSPECT_UTILS.build_registered_image_list(target)
+	var common_text := DEBUG_INSPECT_UTILS.format_dictionary(DEBUG_INSPECT_UTILS.build_common_inspect_data(target))
+	if update_existing:
+		_inspector_panel.update_target_data(status_text, summary_data, registered_images, common_text)
+		return
+	_inspector_panel.show_target_data(status_text, summary_data, registered_images, common_text)
 
 
 func _set_overlay_target(target: Node) -> void:
-	if is_instance_valid(_select_overlay) and _select_overlay.has_method("set_selected_target"):
-		_select_overlay.call("set_selected_target", target)
+	if is_instance_valid(_select_overlay):
+		_select_overlay.set_selected_target(target)
 
 
 func _clear_overlay_target() -> void:
-	if is_instance_valid(_select_overlay) and _select_overlay.has_method("clear_selected_target"):
-		_select_overlay.call("clear_selected_target")
+	if is_instance_valid(_select_overlay):
+		_select_overlay.clear_selected_target()
 
 
 func _hide_pick_popup() -> void:
 	if is_instance_valid(_pick_popup):
 		_pick_popup.hide()
+
+
+func _sync_visibility_state() -> void:
+	if visible == _last_visible_state:
+		return
+	_last_visible_state = visible
+	_sync_active_state()
+
+
+func _should_refresh_selected_target(delta: float) -> bool:
+	if !visible:
+		return false
+	if !_has_valid_selection():
+		if _selected_target != null:
+			_clear_selection()
+		return false
+	_refresh_accumulator += delta
+	if _refresh_accumulator < REFRESH_INTERVAL:
+		return false
+	_refresh_accumulator = 0.0
+	return true
 
 
 func _get_pick_viewport() -> Viewport:

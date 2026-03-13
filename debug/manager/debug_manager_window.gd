@@ -16,11 +16,15 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	title = "Debug Manager"
 	close_requested.connect(hide)
+	_connect_feature_buttons()
+	_move_near_main_window()
+
+
+func _connect_feature_buttons() -> void:
 	_open_input_debugger_button.pressed.connect(_on_open_input_debugger_button_pressed)
 	_open_input_log_button.pressed.connect(_on_open_input_log_button_pressed)
 	_open_object_inspector_button.pressed.connect(_on_open_object_inspector_button_pressed)
 	_toggle_hitbox_overlay_button.toggled.connect(_on_toggle_hitbox_overlay_button_toggled)
-	_move_near_main_window()
 
 
 func _move_near_main_window() -> void:

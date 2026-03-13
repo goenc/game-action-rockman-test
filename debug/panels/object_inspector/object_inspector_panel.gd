@@ -22,20 +22,12 @@ var _registered_image_keys := PackedStringArray()
 
 func show_empty(message: String = "対象なし") -> void:
 	_status_label.text = message
-	_apply_summary_data({
-		"name": "-",
-		"position": "-",
-		"velocity": "-",
-		"state": "-",
-		"animation": "-",
-		"collision": "-",
-	})
-	_common_text.text = ""
+	_apply_summary_data(_empty_summary_data())
+	_update_common_text("", true)
 	_registered_image_keys = PackedStringArray()
 	_clear_registered_image_rows()
 	_registered_images_empty_label.visible = false
 	_registered_images_scroll.scroll_vertical = 0
-	_common_text.scroll_vertical = 0
 
 
 func show_target(target: Node) -> void:
@@ -46,16 +38,20 @@ func update_target(target: Node) -> void:
 	if !is_instance_valid(target) or !target.is_inside_tree():
 		show_empty()
 		return
-	_status_label.text = "選択中 : %s" % DEBUG_INSPECT_UTILS.build_target_title(target)
-	var summary_data := DEBUG_INSPECT_UTILS.build_summary_inspect_data(target)
-	var registered_images := DEBUG_INSPECT_UTILS.build_registered_image_list(target)
-	var common_text := DEBUG_INSPECT_UTILS.format_dictionary(DEBUG_INSPECT_UTILS.build_common_inspect_data(target))
-	_apply_summary_data(summary_data)
-	_update_registered_images(registered_images)
-	if _common_text.text != common_text:
-		var common_scroll_vertical := _common_text.scroll_vertical
-		_common_text.text = common_text
-		_common_text.scroll_vertical = common_scroll_vertical
+	update_target_data(
+		"選択中 : %s" % DEBUG_INSPECT_UTILS.build_target_title(target),
+		DEBUG_INSPECT_UTILS.build_summary_inspect_data(target),
+		DEBUG_INSPECT_UTILS.build_registered_image_list(target),
+		DEBUG_INSPECT_UTILS.format_dictionary(DEBUG_INSPECT_UTILS.build_common_inspect_data(target))
+	)
+
+
+func show_target_data(status_text: String, summary_data: Dictionary, registered_images: Array[Dictionary], common_text: String) -> void:
+	_apply_target_data(status_text, summary_data, registered_images, common_text)
+
+
+func update_target_data(status_text: String, summary_data: Dictionary, registered_images: Array[Dictionary], common_text: String) -> void:
+	_apply_target_data(status_text, summary_data, registered_images, common_text)
 
 
 func _apply_summary_data(summary_data: Dictionary) -> void:
@@ -65,6 +61,13 @@ func _apply_summary_data(summary_data: Dictionary) -> void:
 	_summary_state_value_label.text = str(summary_data.get("state", "-"))
 	_summary_animation_value_label.text = str(summary_data.get("animation", "-"))
 	_summary_collision_value_label.text = str(summary_data.get("collision", "-"))
+
+
+func _apply_target_data(status_text: String, summary_data: Dictionary, registered_images: Array[Dictionary], common_text: String) -> void:
+	_status_label.text = status_text
+	_apply_summary_data(summary_data)
+	_update_registered_images(registered_images)
+	_update_common_text(common_text)
 
 
 func _update_registered_images(image_entries: Array[Dictionary]) -> void:
@@ -154,3 +157,24 @@ func _format_registered_image_label(entry: Dictionary) -> String:
 	if !animation_name.is_empty() and frame_index >= 0:
 		return "%s (%s / %d)" % [label, animation_name, frame_index]
 	return label
+
+
+func _update_common_text(common_text: String, reset_scroll: bool = false) -> void:
+	if _common_text.text != common_text:
+		var common_scroll_vertical: int = 0 if reset_scroll else _common_text.scroll_vertical
+		_common_text.text = common_text
+		_common_text.scroll_vertical = common_scroll_vertical
+		return
+	if reset_scroll:
+		_common_text.scroll_vertical = 0
+
+
+func _empty_summary_data() -> Dictionary:
+	return {
+		"name": "-",
+		"position": "-",
+		"velocity": "-",
+		"state": "-",
+		"animation": "-",
+		"collision": "-",
+	}

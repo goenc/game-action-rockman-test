@@ -1,6 +1,7 @@
-Object Inspector の共通表示を整理
+debug 機能の責務整理と inspector 更新経路の限定リファクタリング
 
-・Object Inspector の Extended セクションを削除した
-・Common 表示領域を拡張し見出しを共通情報へ変更した
-・Common の表示キーを日本語化した
-・tools/run.ps1 による起動確認を実施した
+・DebugManager の manager window 接続と hitbox overlay 状態同期を内部関数に整理
+・DebugManagerWindow のボタン接続を UI ロジックとして集約
+・ObjectInspectorWindow が選択更新データを構築し ObjectInspectorPanel が表示反映を担う形に整理
+・未使用UI候補 ExtraTitleLabel と ExtraInfoText が現行ソースに存在しないことを確認
+・godot_console と tools/run.ps1 で起動継続とエラーなしを確認
