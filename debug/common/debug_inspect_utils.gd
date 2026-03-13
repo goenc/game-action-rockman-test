@@ -236,8 +236,6 @@ static func _resolve_pick_target(source_node: Node) -> Node:
 		return hinted_owner
 	var current := source_node
 	var fallback := source_node
-	if source_node is Area2D:
-		current = source_node.get_parent()
 	while is_instance_valid(current):
 		if _is_preferred_pick_target(current):
 			return current
@@ -265,7 +263,7 @@ static func _resolve_pick_owner_hint(source_node: Node) -> Node:
 static func _is_preferred_pick_target(node: Node) -> bool:
 	if !is_instance_valid(node):
 		return false
-	if node is CollisionObject2D and !(node is Area2D):
+	if node is CollisionObject2D:
 		return true
 	if node is TileMapLayer:
 		return true

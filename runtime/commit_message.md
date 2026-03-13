@@ -1,6 +1,6 @@
-ポーズ入力をDebugManagerへ移管して停止制御を統一
+Area2D のデバッグ選択を親へ昇格させないよう修正
 
-・ポーズ入力の受付をDebugManagerへ移し停止制御をSceneTree.pausedへ統一した
-・pause の責務を GameManager から DebugManager に移し player stage collision 個別制御を追加せず SceneTree.paused のみを使う構成にした
-・tools/run.ps1 による起動確認を実施した
-・godot_console の headless 起動成功を確認した
+・デバッグ選択でArea2Dを親へ昇格させずArea2D自体を選択対象に含めるよう修正した
+・debug_pick_owner と player_owner の既存ヒント処理や CollisionShape2D 非優先方針を維持したまま Area2D 自体を選択候補に残すようにした
+・tools/run.ps1 実行後に Godot プロセス起動を確認した
+・常駐起動のためコマンドはタイムアウトしたが起動成功を確認して終了した

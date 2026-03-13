@@ -14,3 +14,18 @@ code_changes:
 verification:
 ・tools/run.ps1 による起動確認を実施した
 ・godot_console の headless 起動成功を確認した
+日時: 2026-03-14 02:18:34 JST
+対象: debug/common/debug_inspect_utils.gd
+summary: デバッグ選択でArea2Dを親へ昇格させずArea2D自体を選択対象に含めるよう修正した
+変更:
+・_resolve_pick_target の開始ノードを常に source_node とし Area2D の親強制切り替えを削除した
+・_is_preferred_pick_target で Area2D を含む CollisionObject2D 全体を preferred target として扱うようにした
+確認:
+・tools/run.ps1 で起動開始を確認した
+・godot と godot_console の起動を確認後に終了した
+・弾クリックの手動確認は未実施
+code_changes:
+・debug_pick_owner と player_owner の既存ヒント処理や CollisionShape2D 非優先方針を維持したまま Area2D 自体を選択候補に残すようにした
+verification:
+・tools/run.ps1 実行後に Godot プロセス起動を確認した
+・常駐起動のためコマンドはタイムアウトしたが起動成功を確認して終了した
