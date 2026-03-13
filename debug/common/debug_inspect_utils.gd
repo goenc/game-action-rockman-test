@@ -59,7 +59,7 @@ static func build_summary_inspect_data(target: Node) -> Dictionary:
 			"animation": "-",
 			"collision": "-",
 		}
-	var debug_data := _read_debug_inspect_data(target)
+	var debug_data: Variant = _read_debug_inspect_data(target)
 	var position_text := "-"
 	if target is Node2D:
 		position_text = _format_vector2(target.global_position)

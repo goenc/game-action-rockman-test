@@ -1,6 +1,5 @@
-オブジェクトインスペクタに概要欄を追加
+デバッグ選択機能停止の原因だったdebug_inspect_utils.gdの型推論エラーを修正してユーティリティを再ロード可能にした
 
-・名前 座標 速度 状態 アニメ 判定を常時表示する2列3行の概要欄を追加
-・概要欄の表示更新を show_empty と update_target に実装
-・概要欄専用の inspect データ生成関数を追加し既存 Common と Extended 表示仕様を維持
-・tools/run.ps1 で起動確認を実施
+・デバッグ選択機能停止の原因だったdebug_inspect_utils.gdの型推論エラーを修正してユーティリティを再ロード可能にした
+・build_summary_inspect_data内のdebug_dataをVariant明示型に変更しコンパイルエラーを解消
+・godot_console --path . --headless --quit が終了コード0で完了しパースエラー未発生を確認
