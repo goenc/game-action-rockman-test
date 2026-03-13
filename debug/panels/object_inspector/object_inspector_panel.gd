@@ -14,6 +14,7 @@ const REGISTERED_IMAGE_THUMBNAIL_SIZE := Vector2(40.0, 40.0)
 @onready var _registered_images_scroll: ScrollContainer = $SummaryRegisteredImagesScroll
 @onready var _registered_images_empty_label: Label = $SummaryRegisteredImagesScroll/Content/EmptyLabel
 @onready var _registered_images_list: VBoxContainer = $SummaryRegisteredImagesScroll/Content/ImageList
+@onready var _registered_image_row_template: HBoxContainer = $SummaryRegisteredImagesScroll/Content/ImageList/ImageRowTemplate
 @onready var _common_text: TextEdit = $CommonInfoText
 @onready var _extended_text: TextEdit = $ExtraInfoText
 
@@ -98,43 +99,27 @@ func _build_registered_image_keys(image_entries: Array[Dictionary]) -> PackedStr
 		var texture_key := ""
 		if texture != null:
 			texture_key = texture.resource_path if !texture.resource_path.is_empty() else str(texture.get_instance_id())
-		keys.append("%s|%s|%s" % [
+		keys.append("%s|%s|%s|%s" % [
 			str(entry.get("node_path", "")),
-			str(entry.get("file_name", "")),
+			str(entry.get("animation_name", "")),
+			str(entry.get("frame_index", -1)),
 			texture_key,
 		])
 	return keys
 
 
 func _build_registered_image_row(entry: Dictionary) -> HBoxContainer:
-	var row := HBoxContainer.new()
-	row.custom_minimum_size = Vector2(0.0, REGISTERED_IMAGE_THUMBNAIL_SIZE.y)
-	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	row.add_theme_constant_override("separation", 6)
-	row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var row := _registered_image_row_template.duplicate() as HBoxContainer
+	row.name = "ImageRow"
+	row.visible = true
 
-	var thumbnail := TextureRect.new()
+	var thumbnail := row.get_node("Thumbnail") as TextureRect
 	thumbnail.custom_minimum_size = REGISTERED_IMAGE_THUMBNAIL_SIZE
-	thumbnail.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	thumbnail.stretch_mode = TextureRect.STRETCH_SCALE
 	thumbnail.texture = entry.get("texture") as Texture2D
-	thumbnail.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_child(thumbnail)
 
-	var separator_label := Label.new()
-	separator_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	separator_label.text = ":"
-	separator_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_child(separator_label)
-
-	var file_name_label := Label.new()
-	file_name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	file_name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	file_name_label.clip_text = true
-	file_name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	file_name_label.text = str(entry.get("file_name", "(embedded)"))
-	file_name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	row.add_child(file_name_label)
+	var separator_label := row.get_node("SeparatorLabel") as Label
+	var file_name_label := row.get_node("FileNameLabel") as Label
+	file_name_label.text = _format_registered_image_label(entry)
 
 	var texture := entry.get("texture") as Texture2D
 	var resource_path := texture.resource_path if texture != null else ""
@@ -142,7 +127,13 @@ func _build_registered_image_row(entry: Dictionary) -> HBoxContainer:
 	var node_path := str(entry.get("node_path", ""))
 	if !node_path.is_empty():
 		tooltip_lines.append("Node: %s" % node_path)
-	tooltip_lines.append("File: %s" % file_name_label.text)
+	tooltip_lines.append("File: %s" % str(entry.get("file_name", "(embedded)")))
+	var animation_name := str(entry.get("animation_name", ""))
+	var frame_index := int(entry.get("frame_index", -1))
+	if !animation_name.is_empty():
+		tooltip_lines.append("Animation: %s" % animation_name)
+	if frame_index >= 0:
+		tooltip_lines.append("Frame: %d" % frame_index)
 	if !resource_path.is_empty():
 		tooltip_lines.append("Resource: %s" % resource_path)
 	row.tooltip_text = "\n".join(tooltip_lines)
@@ -154,9 +145,20 @@ func _build_registered_image_row(entry: Dictionary) -> HBoxContainer:
 
 func _clear_registered_image_rows() -> void:
 	for child in _registered_images_list.get_children():
+		if child == _registered_image_row_template:
+			continue
 		_registered_images_list.remove_child(child)
 		child.queue_free()
 
 
 func _restore_registered_images_scroll(scroll_vertical: int) -> void:
 	_registered_images_scroll.scroll_vertical = scroll_vertical
+
+
+func _format_registered_image_label(entry: Dictionary) -> String:
+	var label := str(entry.get("file_name", "(embedded)"))
+	var animation_name := str(entry.get("animation_name", ""))
+	var frame_index := int(entry.get("frame_index", -1))
+	if !animation_name.is_empty() and frame_index >= 0:
+		return "%s (%s / %d)" % [label, animation_name, frame_index]
+	return label

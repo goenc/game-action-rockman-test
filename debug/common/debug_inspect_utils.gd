@@ -92,8 +92,8 @@ static func build_registered_image_list(target: Node) -> Array[Dictionary]:
 	var image_entries: Array[Dictionary] = []
 	if !is_instance_valid(target):
 		return image_entries
-	var seen_by_node: Dictionary = {}
-	_collect_registered_image_entries(target, image_entries, seen_by_node)
+	var seen_entries: Dictionary = {}
+	_collect_registered_image_entries(target, image_entries, seen_entries)
 	return image_entries
 
 
@@ -451,45 +451,48 @@ static func _append_formatted_lines(lines: Array[String], key: String, value, in
 	lines.append("%s%s: %s" % [prefix, key, _stringify(value)])
 
 
-static func _collect_registered_image_entries(node: Node, image_entries: Array[Dictionary], seen_by_node: Dictionary) -> void:
-	_append_registered_image_entry(node, image_entries, seen_by_node)
+static func _collect_registered_image_entries(node: Node, image_entries: Array[Dictionary], seen_entries: Dictionary) -> void:
+	_append_registered_image_entries_for_node(node, image_entries, seen_entries)
 	for child in node.get_children():
 		if child is Node:
-			_collect_registered_image_entries(child as Node, image_entries, seen_by_node)
+			_collect_registered_image_entries(child as Node, image_entries, seen_entries)
 
 
-static func _append_registered_image_entry(node: Node, image_entries: Array[Dictionary], seen_by_node: Dictionary) -> void:
+static func _append_registered_image_entries_for_node(node: Node, image_entries: Array[Dictionary], seen_entries: Dictionary) -> void:
 	if node is Sprite2D:
-		_append_registered_texture(node, node.texture, image_entries, seen_by_node)
+		_append_registered_texture(node, node.texture, "", -1, image_entries, seen_entries)
 	elif node is AnimatedSprite2D:
-		_append_registered_texture(node, _get_current_animated_sprite_texture(node), image_entries, seen_by_node)
+		_append_registered_sprite_frames_entries(node, node.sprite_frames, image_entries, seen_entries)
 
 
-static func _get_current_animated_sprite_texture(sprite: AnimatedSprite2D) -> Texture2D:
-	if sprite.sprite_frames == null or !sprite.sprite_frames.has_animation(sprite.animation):
-		return null
-	return sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
+static func _append_registered_sprite_frames_entries(source_node: Node, sprite_frames: SpriteFrames, image_entries: Array[Dictionary], seen_entries: Dictionary) -> void:
+	if sprite_frames == null:
+		return
+	for animation_name_variant in sprite_frames.get_animation_names():
+		var animation_name := str(animation_name_variant)
+		var frame_count := sprite_frames.get_frame_count(animation_name_variant)
+		for frame_index in range(frame_count):
+			var texture := sprite_frames.get_frame_texture(animation_name_variant, frame_index)
+			_append_registered_texture(source_node, texture, animation_name, frame_index, image_entries, seen_entries)
 
 
-static func _append_registered_texture(source_node: Node, texture: Texture2D, image_entries: Array[Dictionary], seen_by_node: Dictionary) -> void:
+static func _append_registered_texture(source_node: Node, texture: Texture2D, animation_name: String, frame_index: int, image_entries: Array[Dictionary], seen_entries: Dictionary) -> void:
 	if texture == null:
 		return
-	var node_key := str(source_node.get_instance_id())
-	var existing_seen = seen_by_node.get(node_key, {})
-	var seen_textures: Dictionary = existing_seen if existing_seen is Dictionary else {}
-	var texture_key := _registered_texture_key(texture)
-	if seen_textures.has(texture_key):
+	var entry_key := _registered_image_entry_key(source_node, animation_name, frame_index)
+	if seen_entries.has(entry_key):
 		return
-	seen_textures[texture_key] = true
-	seen_by_node[node_key] = seen_textures
-	image_entries.append(_build_registered_image_entry(source_node, texture))
+	seen_entries[entry_key] = true
+	image_entries.append(_build_registered_image_entry(source_node, texture, animation_name, frame_index))
 
 
-static func _build_registered_image_entry(source_node: Node, texture: Texture2D) -> Dictionary:
+static func _build_registered_image_entry(source_node: Node, texture: Texture2D, animation_name: String, frame_index: int) -> Dictionary:
 	return {
 		"texture": texture,
 		"file_name": _registered_texture_file_name(texture),
 		"node_path": str(source_node.get_path()),
+		"animation_name": animation_name,
+		"frame_index": frame_index,
 	}
 
 
@@ -499,12 +502,12 @@ static func _registered_texture_file_name(texture: Texture2D) -> String:
 	return texture.resource_path.get_file()
 
 
-static func _registered_texture_key(texture: Texture2D) -> String:
-	if texture == null:
-		return ""
-	if !texture.resource_path.is_empty():
-		return texture.resource_path
-	return str(texture.get_instance_id())
+static func _registered_image_entry_key(source_node: Node, animation_name: String, frame_index: int) -> String:
+	return "%s|%s|%d" % [
+		str(source_node.get_instance_id()),
+		animation_name,
+		frame_index,
+	]
 
 
 static func _format_vector2(value: Variant) -> String:
