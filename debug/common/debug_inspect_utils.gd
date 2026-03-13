@@ -31,21 +31,21 @@ static func build_common_inspect_data(target: Node) -> Dictionary:
 	if !is_instance_valid(target):
 		return {}
 	var data := {
-		"name": target.name,
-		"class": target.get_class(),
-		"scene_file_path": _string_or_dash(target.scene_file_path),
-		"node_path": str(target.get_path()),
-		"parent_name": _string_or_dash(target.get_parent().name if is_instance_valid(target.get_parent()) else ""),
-		"global_position": _format_vector2(_get_global_position(target)),
-		"position": _format_vector2(_get_local_position(target)),
-		"visible": _format_visible(target),
-		"process_mode": _process_mode_name(target.process_mode),
-		"collision_layer": "-",
-		"collision_mask": "-",
+		"名前": target.name,
+		"クラス": target.get_class(),
+		"シーンファイル": _string_or_dash(target.scene_file_path),
+		"ノードパス": str(target.get_path()),
+		"親ノード": _string_or_dash(target.get_parent().name if is_instance_valid(target.get_parent()) else ""),
+		"グローバル座標": _format_vector2(_get_global_position(target)),
+		"ローカル座標": _format_vector2(_get_local_position(target)),
+		"表示": _format_visible(target),
+		"処理モード": _process_mode_name(target.process_mode),
+		"当たり判定レイヤー": "-",
+		"当たり判定マスク": "-",
 	}
 	if target is CollisionObject2D:
-		data["collision_layer"] = str(target.collision_layer)
-		data["collision_mask"] = str(target.collision_mask)
+		data["当たり判定レイヤー"] = str(target.collision_layer)
+		data["当たり判定マスク"] = str(target.collision_mask)
 	return data
 
 

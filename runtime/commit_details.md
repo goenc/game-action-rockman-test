@@ -1,7 +1,9 @@
-日時: 2026-03-13 21:51:44 JST
-summary: Object Inspector の登録画像を現在フレームではなく全登録画像一覧で確認できるようにした
+日時: 2026-03-13 22:04:17 JST
+summary: Object Inspector の Extended セクションを削除し Common 表示を拡張して日本語化
+対象: debug/panels/object_inspector/object_inspector_panel.gd, debug/panels/object_inspector/object_inspector_panel.tscn, debug/common/debug_inspect_utils.gd
 code_changes:
-・AnimatedSprite2D の SpriteFrames から全アニメーション名と全フレームを走査し texture file_name node_path animation_name frame_index を持つ登録画像一覧を収集するよう変更
-・Object Inspector に登録画像セクションを追加し サムネイルとファイル名と animation frame 情報をスクロール一覧で表示するよう変更
+・Object Inspector の script から Extended の onready 参照と空表示時の初期化と更新時の生成およびスクロール復元処理を削除した
+・Object Inspector の scene から Extended 見出しとテキスト欄を削除し Common 見出しを共通情報へ変更して表示領域を下方向へ拡張した
+・Common の表示キーを日本語へ変更し値の中身と TextEdit の折り返しおよびスクロール挙動は維持した
 verification:
-・tools/run.ps1 を別プロセス起動し Godot と godot_console の起動を確認した
+・tools/run.ps1 を使用して起動を 8 秒間確認し エラーなく起動継続することを確認した

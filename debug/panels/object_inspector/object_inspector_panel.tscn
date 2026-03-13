@@ -207,30 +207,12 @@ offset_top = 222.0
 offset_right = 178.0
 offset_bottom = 240.0
 theme_override_font_sizes/font_size = 11
-text = "Common"
+text = "共通情報"
 
 [node name="CommonInfoText" type="TextEdit" parent="."]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 242.0
-offset_right = 374.0
-offset_bottom = 302.0
-editable = false
-wrap_mode = 1
-
-[node name="ExtraTitleLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 310.0
-offset_right = 178.0
-offset_bottom = 328.0
-theme_override_font_sizes/font_size = 11
-text = "Extended"
-
-[node name="ExtraInfoText" type="TextEdit" parent="."]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 330.0
 offset_right = 374.0
 offset_bottom = 390.0
 editable = false

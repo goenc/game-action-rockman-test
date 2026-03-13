@@ -16,7 +16,6 @@ const REGISTERED_IMAGE_THUMBNAIL_SIZE := Vector2(40.0, 40.0)
 @onready var _registered_images_list: VBoxContainer = $SummaryRegisteredImagesScroll/Content/ImageList
 @onready var _registered_image_row_template: HBoxContainer = $SummaryRegisteredImagesScroll/Content/ImageList/ImageRowTemplate
 @onready var _common_text: TextEdit = $CommonInfoText
-@onready var _extended_text: TextEdit = $ExtraInfoText
 
 var _registered_image_keys := PackedStringArray()
 
@@ -32,13 +31,11 @@ func show_empty(message: String = "対象なし") -> void:
 		"collision": "-",
 	})
 	_common_text.text = ""
-	_extended_text.text = ""
 	_registered_image_keys = PackedStringArray()
 	_clear_registered_image_rows()
 	_registered_images_empty_label.visible = false
 	_registered_images_scroll.scroll_vertical = 0
 	_common_text.scroll_vertical = 0
-	_extended_text.scroll_vertical = 0
 
 
 func show_target(target: Node) -> void:
@@ -53,17 +50,12 @@ func update_target(target: Node) -> void:
 	var summary_data := DEBUG_INSPECT_UTILS.build_summary_inspect_data(target)
 	var registered_images := DEBUG_INSPECT_UTILS.build_registered_image_list(target)
 	var common_text := DEBUG_INSPECT_UTILS.format_dictionary(DEBUG_INSPECT_UTILS.build_common_inspect_data(target))
-	var extended_text := DEBUG_INSPECT_UTILS.format_dictionary(DEBUG_INSPECT_UTILS.build_extra_inspect_data(target))
 	_apply_summary_data(summary_data)
 	_update_registered_images(registered_images)
 	if _common_text.text != common_text:
 		var common_scroll_vertical := _common_text.scroll_vertical
 		_common_text.text = common_text
 		_common_text.scroll_vertical = common_scroll_vertical
-	if _extended_text.text != extended_text:
-		var extended_scroll_vertical := _extended_text.scroll_vertical
-		_extended_text.text = extended_text
-		_extended_text.scroll_vertical = extended_scroll_vertical
 
 
 func _apply_summary_data(summary_data: Dictionary) -> void:
