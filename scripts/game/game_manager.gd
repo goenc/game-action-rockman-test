@@ -20,7 +20,6 @@ var stage = null
 
 
 func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
 	_register_input_map()
 	game_config = _load_json(CONFIG_PATH)
 	_apply_window_settings()
@@ -38,9 +37,6 @@ func _ready() -> void:
 
 
 func _unhandled_input(_event: InputEvent) -> void:
-	if Input.is_action_just_pressed("pause") and game_state == GameState.PLAYING:
-		set_paused_from_debug(!get_tree().paused)
-		return
 	if get_tree().paused:
 		return
 	if game_state == GameState.CLEAR and Input.is_action_just_pressed("ui_accept"):
@@ -54,6 +50,10 @@ func get_stage():
 
 func is_gameplay_active() -> bool:
 	return game_state == GameState.PLAYING and !get_tree().paused
+
+
+func is_pause_toggle_allowed() -> bool:
+	return game_state == GameState.PLAYING
 
 
 func set_paused_from_debug(enabled: bool) -> void:

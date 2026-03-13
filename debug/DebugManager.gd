@@ -22,6 +22,16 @@ func _ready() -> void:
 	call_deferred("open_manager_window")
 
 
+func _process(_delta: float) -> void:
+	if !InputMap.has_action("pause"):
+		return
+	if !Input.is_action_just_pressed("pause"):
+		return
+	if !_can_toggle_pause_from_debug_input():
+		return
+	set_game_paused(!get_tree().paused)
+
+
 func open_manager_window() -> void:
 	_show_window(MANAGER_WINDOW_ID)
 	_sync_manager_window_pause_state()
@@ -146,6 +156,11 @@ func _sync_manager_window_pause_state() -> void:
 	if !is_instance_valid(manager_window):
 		return
 	manager_window.set_pause_enabled(is_game_paused())
+
+
+func _can_toggle_pause_from_debug_input() -> bool:
+	var game_manager := _resolve_game_manager()
+	return is_instance_valid(game_manager) and game_manager.is_pause_toggle_allowed()
 
 
 func _resolve_game_manager() -> GameManager:

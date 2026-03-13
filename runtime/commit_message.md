@@ -1,6 +1,6 @@
-デバッグ管理ウィンドウのポーズ制御を実装
+ポーズ入力をDebugManagerへ移管して停止制御を統一
 
-・Debug Manager Window に Pause CheckButton と状態同期用シグナルを追加
-・DebugManager から GameManager を解決して SceneTree.paused の実状態へ同期する処理を追加
-・GameManager の Pキー操作とデバッグ操作を共通の pause 実処理へ統一
-・ヘッドレス読み込み確認と起動スクリプトの起動確認を実施
+・ポーズ入力の受付をDebugManagerへ移し停止制御をSceneTree.pausedへ統一した
+・pause の責務を GameManager から DebugManager に移し player stage collision 個別制御を追加せず SceneTree.paused のみを使う構成にした
+・tools/run.ps1 による起動確認を実施した
+・godot_console の headless 起動成功を確認した
