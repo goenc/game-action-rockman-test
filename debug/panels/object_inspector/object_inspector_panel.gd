@@ -37,7 +37,8 @@ func update_target(target: Node) -> void:
 		show_empty()
 		return
 	_status_label.text = "選択中 : %s" % DEBUG_INSPECT_UTILS.build_target_title(target)
-	_apply_summary_data(DEBUG_INSPECT_UTILS.build_summary_inspect_data(target))
+	var summary_data := DEBUG_INSPECT_UTILS.build_summary_inspect_data(target)
+	_apply_summary_data(summary_data)
 	_common_text.text = DEBUG_INSPECT_UTILS.format_dictionary(DEBUG_INSPECT_UTILS.build_common_inspect_data(target))
 	_extra_text.text = DEBUG_INSPECT_UTILS.format_dictionary(DEBUG_INSPECT_UTILS.build_extra_inspect_data(target))
 

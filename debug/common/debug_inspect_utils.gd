@@ -66,7 +66,7 @@ static func build_summary_inspect_data(target: Node) -> Dictionary:
 	return {
 		"name": _string_or_dash(target.name),
 		"position": position_text,
-		"velocity": _extract_summary_value(debug_data, PackedStringArray(["velocity", "current_velocity"])),
+		"velocity": _resolve_velocity_summary(target, debug_data),
 		"state": _extract_summary_value(debug_data, PackedStringArray(["state", "current_state", "boss_state", "game_state"])),
 		"animation": _resolve_animation_summary(target, debug_data),
 		"collision": _resolve_collision_summary(target, debug_data),
@@ -462,18 +462,62 @@ static func _extract_summary_value(debug_data: Variant, keys: PackedStringArray)
 	return "-"
 
 
+static func _resolve_velocity_summary(target: Node, debug_data: Variant) -> String:
+	if debug_data is Dictionary:
+		for key in PackedStringArray(["velocity", "current_velocity"]):
+			if !debug_data.has(key):
+				continue
+			var from_debug := _format_velocity_value(debug_data.get(key))
+			if from_debug != "-":
+				return from_debug
+	var direct_velocity: Variant = _read_property_if_exists(target, "velocity")
+	var from_direct := _format_velocity_value(direct_velocity)
+	if from_direct != "-":
+		return from_direct
+	return "-"
+
+
+static func _format_velocity_value(value: Variant) -> String:
+	if value is Vector2:
+		return "%.1f,%.1f" % [value.x, value.y]
+	if value is Dictionary and value.has("x") and value.has("y"):
+		return "%.1f,%.1f" % [float(value.get("x", 0.0)), float(value.get("y", 0.0))]
+	if value is Array and value.size() >= 2:
+		return "%.1f,%.1f" % [float(value[0]), float(value[1])]
+	return "-"
+
+
+static func _read_property_if_exists(target: Object, property_name: String) -> Variant:
+	if target == null:
+		return null
+	for property_info in target.get_property_list():
+		if str(property_info.get("name", "")) == property_name:
+			return target.get(property_name)
+	return null
+
+
 static func _resolve_animation_summary(target: Node, debug_data: Variant) -> String:
 	var from_debug := _extract_summary_value(debug_data, PackedStringArray(["animation", "current_animation", "anim"]))
 	if from_debug != "-":
 		return from_debug
 	if target is AnimatedSprite2D:
 		return _stringify(target.animation)
-	var animation_player := target.get_node_or_null("AnimationPlayer")
-	if animation_player is AnimationPlayer:
-		var current_animation := (animation_player as AnimationPlayer).current_animation
-		if !str(current_animation).is_empty():
-			return str(current_animation)
+	var sprite := _find_animated_sprite_descendant(target)
+	if sprite != null:
+		return _stringify(sprite.animation)
 	return "-"
+
+
+static func _find_animated_sprite_descendant(node: Node) -> AnimatedSprite2D:
+	for child in node.get_children():
+		if !(child is Node):
+			continue
+		if child is AnimatedSprite2D:
+			return child as AnimatedSprite2D
+		var nested := _find_animated_sprite_descendant(child)
+		if nested != null:
+			return nested
+	return null
 
 
 static func _resolve_collision_summary(target: Node, debug_data: Variant) -> String:

@@ -1,5 +1,7 @@
-デバッグ選択機能停止の原因だったdebug_inspect_utils.gdの型推論エラーを修正してユーティリティを再ロード可能にした
+Object Inspector概要欄の速度とアニメ取得を修正
 
-・デバッグ選択機能停止の原因だったdebug_inspect_utils.gdの型推論エラーを修正してユーティリティを再ロード可能にした
-・build_summary_inspect_data内のdebug_dataをVariant明示型に変更しコンパイルエラーを解消
-・godot_console --path . --headless --quit が終了コード0で完了しパースエラー未発生を確認
+・概要欄の速度を get_debug_inspect_data の velocity/current_velocity 優先で取得し未提供時は対象ノードの velocity を直接参照して x,y 形式で表示するようにした
+・概要欄のアニメを get_debug_inspect_data の animation/current_animation/anim 優先で取得し未提供時は AnimatedSprite2D 自身または子孫ノードから取得するようにした
+・Object Inspector の update_target 内で概要欄データを明示的に受けて反映するようにした
+・player.gd で velocity 更新箇所と sprite.play による animation 切替箇所を確認し get_debug_inspect_data が未実装であることを確認した
+・godot_console --headless --path . --quit で起動確認を実施して成功した
