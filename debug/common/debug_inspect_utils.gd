@@ -49,12 +49,38 @@ static func build_common_inspect_data(target: Node) -> Dictionary:
 	return data
 
 
+static func build_summary_inspect_data(target: Node) -> Dictionary:
+	if !is_instance_valid(target):
+		return {
+			"name": "-",
+			"position": "-",
+			"velocity": "-",
+			"state": "-",
+			"animation": "-",
+			"collision": "-",
+		}
+	var debug_data := _read_debug_inspect_data(target)
+	var position_text := "-"
+	if target is Node2D:
+		position_text = _format_vector2(target.global_position)
+	return {
+		"name": _string_or_dash(target.name),
+		"position": position_text,
+		"velocity": _extract_summary_value(debug_data, PackedStringArray(["velocity", "current_velocity"])),
+		"state": _extract_summary_value(debug_data, PackedStringArray(["state", "current_state", "boss_state", "game_state"])),
+		"animation": _resolve_animation_summary(target, debug_data),
+		"collision": _resolve_collision_summary(target, debug_data),
+	}
+
+
 static func build_extra_inspect_data(target: Node) -> Dictionary:
-	if !is_instance_valid(target) or !target.has_method("get_debug_inspect_data"):
+	if !is_instance_valid(target):
 		return {}
-	var extra_data = target.call("get_debug_inspect_data")
+	var extra_data = _read_debug_inspect_data(target)
 	if extra_data is Dictionary:
 		return extra_data
+	if extra_data == null:
+		return {}
 	return {"value": extra_data}
 
 
@@ -416,6 +442,100 @@ static func _format_vector2(value: Variant) -> String:
 	if value is Vector2:
 		return "(%.1f, %.1f)" % [value.x, value.y]
 	return "-"
+
+
+static func _read_debug_inspect_data(target: Node):
+	if !is_instance_valid(target) or !target.has_method("get_debug_inspect_data"):
+		return null
+	return target.call("get_debug_inspect_data")
+
+
+static func _extract_summary_value(debug_data: Variant, keys: PackedStringArray) -> String:
+	if !(debug_data is Dictionary):
+		return "-"
+	for key in keys:
+		if !debug_data.has(key):
+			continue
+		var value_text := _stringify(debug_data.get(key))
+		if value_text != "-":
+			return value_text
+	return "-"
+
+
+static func _resolve_animation_summary(target: Node, debug_data: Variant) -> String:
+	var from_debug := _extract_summary_value(debug_data, PackedStringArray(["animation", "current_animation", "anim"]))
+	if from_debug != "-":
+		return from_debug
+	if target is AnimatedSprite2D:
+		return _stringify(target.animation)
+	var animation_player := target.get_node_or_null("AnimationPlayer")
+	if animation_player is AnimationPlayer:
+		var current_animation := (animation_player as AnimationPlayer).current_animation
+		if !str(current_animation).is_empty():
+			return str(current_animation)
+	return "-"
+
+
+static func _resolve_collision_summary(target: Node, debug_data: Variant) -> String:
+	if debug_data is Dictionary:
+		for key in PackedStringArray(["collision", "collision_state", "collision_enabled", "is_collision_enabled"]):
+			if !debug_data.has(key):
+				continue
+			var normalized := _normalize_collision_value(debug_data.get(key))
+			if normalized != "-":
+				return normalized
+	return _detect_collision_state(target)
+
+
+static func _normalize_collision_value(value: Variant) -> String:
+	if value is bool:
+		return "ON" if value else "OFF"
+	if value is int or value is float:
+		return "ON" if float(value) != 0.0 else "OFF"
+	var text := str(value).strip_edges().to_lower()
+	if text.is_empty() or text == "-":
+		return "-"
+	if text in ["on", "true", "enabled", "enable", "active", "1"]:
+		return "ON"
+	if text in ["off", "false", "disabled", "disable", "inactive", "0"]:
+		return "OFF"
+	return _stringify(value)
+
+
+static func _detect_collision_state(target: Node) -> String:
+	if target is CollisionShape2D:
+		return "OFF" if target.disabled else "ON"
+	if target is CollisionPolygon2D:
+		return "OFF" if target.disabled else "ON"
+	var state := _collect_collision_shape_state(target)
+	if bool(state.get("found", false)):
+		return "ON" if bool(state.get("enabled", false)) else "OFF"
+	if target is CollisionObject2D:
+		return "ON"
+	return "-"
+
+
+static func _collect_collision_shape_state(node: Node) -> Dictionary:
+	var found := false
+	var enabled := false
+	if node is CollisionShape2D:
+		found = true
+		enabled = !node.disabled
+	elif node is CollisionPolygon2D:
+		found = true
+		enabled = !node.disabled
+	for child in node.get_children():
+		if !(child is Node):
+			continue
+		var child_state := _collect_collision_shape_state(child)
+		if bool(child_state.get("found", false)):
+			found = true
+			if bool(child_state.get("enabled", false)):
+				enabled = true
+	return {
+		"found": found,
+		"enabled": enabled,
+	}
 
 
 static func _string_or_dash(value: String) -> String:
