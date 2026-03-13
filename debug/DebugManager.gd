@@ -24,6 +24,7 @@ func _ready() -> void:
 
 func open_manager_window() -> void:
 	_show_window(MANAGER_WINDOW_ID)
+	_sync_manager_window_pause_state()
 
 
 func open_input_debugger_window() -> void:
@@ -44,8 +45,19 @@ func set_hitbox_overlay_enabled(enabled: bool) -> void:
 	_sync_manager_window_hitbox_state()
 
 
+func set_game_paused(enabled: bool) -> void:
+	var game_manager := _resolve_game_manager()
+	if is_instance_valid(game_manager):
+		game_manager.set_paused_from_debug(enabled)
+	_sync_manager_window_pause_state()
+
+
 func is_hitbox_overlay_enabled() -> bool:
 	return _hitbox_overlay_enabled
+
+
+func is_game_paused() -> bool:
+	return get_tree().paused
 
 
 func _show_window(window_id: StringName) -> void:
@@ -99,6 +111,7 @@ func _configure_manager_window(window: DebugManagerWindow) -> void:
 		return
 	_connect_manager_window_signals(window)
 	window.set_hitbox_overlay_enabled(_hitbox_overlay_enabled)
+	window.set_pause_enabled(is_game_paused())
 
 
 func _connect_manager_window_signals(window: DebugManagerWindow) -> void:
@@ -110,6 +123,8 @@ func _connect_manager_window_signals(window: DebugManagerWindow) -> void:
 		window.open_object_inspector_requested.connect(open_object_inspector_window)
 	if !window.hitbox_overlay_toggled.is_connected(set_hitbox_overlay_enabled):
 		window.hitbox_overlay_toggled.connect(set_hitbox_overlay_enabled)
+	if !window.pause_toggled.is_connected(set_game_paused):
+		window.pause_toggled.connect(set_game_paused)
 
 
 func _sync_hitbox_overlay_visibility() -> void:
@@ -124,6 +139,29 @@ func _sync_manager_window_hitbox_state() -> void:
 	if !is_instance_valid(manager_window):
 		return
 	manager_window.set_hitbox_overlay_enabled(_hitbox_overlay_enabled)
+
+
+func _sync_manager_window_pause_state() -> void:
+	var manager_window := _windows.get(MANAGER_WINDOW_ID) as DebugManagerWindow
+	if !is_instance_valid(manager_window):
+		return
+	manager_window.set_pause_enabled(is_game_paused())
+
+
+func _resolve_game_manager() -> GameManager:
+	var current_scene := get_tree().current_scene
+	if current_scene is GameManager:
+		return current_scene as GameManager
+	if !is_instance_valid(current_scene):
+		return null
+	var nodes_to_visit: Array[Node] = [current_scene]
+	while !nodes_to_visit.is_empty():
+		var node: Node = nodes_to_visit.pop_back()
+		if node is GameManager:
+			return node as GameManager
+		for child in node.get_children():
+			nodes_to_visit.append(child)
+	return null
 
 
 func _get_or_create_hitbox_overlay() -> CanvasItem:

@@ -6,7 +6,7 @@
 oversampling_override = 1.0
 title = "Debug Manager"
 initial_position = 2
-size = Vector2i(220, 194)
+size = Vector2i(220, 236)
 wrap_controls = true
 unresizable = true
 script = ExtResource("1_manager_script")
@@ -39,10 +39,18 @@ offset_right = 206.0
 offset_bottom = 130.0
 text = "Hitbox Overlay"
 
-[node name="OpenObjectInspectorButton" type="Button" parent="FeatureButtons"]
+[node name="TogglePauseButton" type="CheckButton" parent="FeatureButtons"]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 140.0
 offset_right = 206.0
 offset_bottom = 172.0
+text = "Pause"
+
+[node name="OpenObjectInspectorButton" type="Button" parent="FeatureButtons"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 182.0
+offset_right = 206.0
+offset_bottom = 214.0
 text = "Object Inspector"

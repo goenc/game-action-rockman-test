@@ -39,8 +39,7 @@ func _ready() -> void:
 
 func _unhandled_input(_event: InputEvent) -> void:
 	if Input.is_action_just_pressed("pause") and game_state == GameState.PLAYING:
-		get_tree().paused = !get_tree().paused
-		hud.set_paused(get_tree().paused)
+		set_paused_from_debug(!get_tree().paused)
 		return
 	if get_tree().paused:
 		return
@@ -55,6 +54,12 @@ func get_stage():
 
 func is_gameplay_active() -> bool:
 	return game_state == GameState.PLAYING and !get_tree().paused
+
+
+func set_paused_from_debug(enabled: bool) -> void:
+	if game_state == GameState.PLAYING:
+		get_tree().paused = enabled
+	hud.set_paused(get_tree().paused)
 
 
 func _start_game() -> void:

@@ -1,12 +1,10 @@
-日時: 2026-03-13 22:45 JST
-対象: debug 機能の限定リファクタリング
-summary: DebugManager と Object Inspector の責務を整理し未使用UI候補の未存在確認を行った
+日時: 2026-03-14 00:07:30 JST
+対象: デバッグ管理ウィンドウのゲーム全体ポーズ切り替え
+summary: Debug Manager Window から SceneTree.paused を使うゲーム全体のポーズ再開を操作できるようにした
 code_changes:
-・DebugManager で manager window の signal 接続と hitbox overlay 状態同期を内部関数へ集約した
-・DebugManagerWindow のボタン接続を _connect_feature_buttons() に整理した
-・ObjectInspectorWindow が選択対象管理と inspector 表示データ構築を担い Panel 連携を明確化した
-・ObjectInspectorPanel に表示データ反映用メソッドと common 情報スクロール維持処理を集約した
+・Debug Manager Window に Pause CheckButton と pause_toggled と set_pause_enabled を追加した
+・DebugManager に GameManager 解決処理と pause 状態同期を追加し非ゲームシーンでは実状態へ表示を戻すようにした
+・GameManager に set_paused_from_debug を追加し Pキー操作も同じ pause 実処理と HUD 同期を通すようにした
 verification:
-・rg -n "ExtraTitleLabel|ExtraInfoText" . で候補 UI 名が現行ソースに存在しないことを確認した
-・godot_console --path . --quit-after 60 で起動し parse error と missing node エラーがないことを確認した
-・tools/run.ps1 を再実行し起動が継続することを確認した
+・godot_console --headless --path . --quit-after 1 でスクリプト読み込み成功を確認した
+・tools/run.ps1 の起動で godot_console.exe が立ち上がることを確認した
