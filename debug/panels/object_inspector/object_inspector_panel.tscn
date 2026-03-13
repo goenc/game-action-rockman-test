@@ -97,21 +97,54 @@ theme_override_font_sizes/font_size = 11
 text = "-"
 clip_text = true
 
+[node name="SummaryRegisteredImagesLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 104.0
+offset_right = 178.0
+offset_bottom = 122.0
+theme_override_font_sizes/font_size = 11
+text = "登録画像"
+
+[node name="SummaryRegisteredImagesScroll" type="ScrollContainer" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 124.0
+offset_right = 374.0
+offset_bottom = 212.0
+horizontal_scroll_mode = 0
+
+[node name="Content" type="VBoxContainer" parent="SummaryRegisteredImagesScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="EmptyLabel" type="Label" parent="SummaryRegisteredImagesScroll/Content"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "なし"
+
+[node name="ImageList" type="VBoxContainer" parent="SummaryRegisteredImagesScroll/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
 [node name="SummaryVelocityLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 10.0
-offset_top = 78.0
+offset_top = 220.0
 offset_right = 42.0
-offset_bottom = 96.0
+offset_bottom = 238.0
 theme_override_font_sizes/font_size = 11
 text = "速度"
 
 [node name="SummaryVelocityValueLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 48.0
-offset_top = 78.0
+offset_top = 220.0
 offset_right = 186.0
-offset_bottom = 96.0
+offset_bottom = 238.0
 theme_override_font_sizes/font_size = 11
 text = "-"
 clip_text = true
@@ -119,18 +152,18 @@ clip_text = true
 [node name="SummaryCollisionLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 194.0
-offset_top = 78.0
+offset_top = 220.0
 offset_right = 226.0
-offset_bottom = 96.0
+offset_bottom = 238.0
 theme_override_font_sizes/font_size = 11
 text = "判定"
 
 [node name="SummaryCollisionValueLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 232.0
-offset_top = 78.0
+offset_top = 220.0
 offset_right = 374.0
-offset_bottom = 96.0
+offset_bottom = 238.0
 theme_override_font_sizes/font_size = 11
 text = "-"
 clip_text = true
@@ -138,50 +171,35 @@ clip_text = true
 [node name="CommonTitleLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 10.0
-offset_top = 104.0
+offset_top = 246.0
 offset_right = 178.0
-offset_bottom = 122.0
+offset_bottom = 264.0
 theme_override_font_sizes/font_size = 11
 text = "Common"
 
 [node name="CommonInfoText" type="TextEdit" parent="."]
 layout_mode = 0
 offset_left = 10.0
-offset_top = 124.0
+offset_top = 266.0
 offset_right = 374.0
-offset_bottom = 246.0
+offset_bottom = 326.0
 editable = false
 wrap_mode = 1
 
 [node name="ExtraTitleLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 10.0
-offset_top = 254.0
+offset_top = 334.0
 offset_right = 178.0
-offset_bottom = 272.0
+offset_bottom = 352.0
 theme_override_font_sizes/font_size = 11
 text = "Extended"
 
-[node name="ExtraInfoText" type="ScrollContainer" parent="."]
+[node name="ExtraInfoText" type="TextEdit" parent="."]
 layout_mode = 0
 offset_left = 10.0
-offset_top = 274.0
+offset_top = 354.0
 offset_right = 374.0
 offset_bottom = 390.0
-horizontal_scroll_mode = 0
-
-[node name="Content" type="VBoxContainer" parent="ExtraInfoText"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 6
-
-[node name="EmptyLabel" type="Label" parent="ExtraInfoText/Content"]
-visible = false
-layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "なし"
-
-[node name="ImageList" type="VBoxContainer" parent="ExtraInfoText/Content"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 6
+editable = false
+wrap_mode = 1

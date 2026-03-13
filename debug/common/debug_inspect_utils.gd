@@ -482,14 +482,21 @@ static func _append_registered_texture(source_node: Node, texture: Texture2D, im
 		return
 	seen_textures[texture_key] = true
 	seen_by_node[node_key] = seen_textures
-	var file_name := "(embedded)"
-	if !texture.resource_path.is_empty():
-		file_name = texture.resource_path.get_file()
-	image_entries.append({
+	image_entries.append(_build_registered_image_entry(source_node, texture))
+
+
+static func _build_registered_image_entry(source_node: Node, texture: Texture2D) -> Dictionary:
+	return {
 		"texture": texture,
-		"file_name": file_name,
+		"file_name": _registered_texture_file_name(texture),
 		"node_path": str(source_node.get_path()),
-	})
+	}
+
+
+static func _registered_texture_file_name(texture: Texture2D) -> String:
+	if texture == null or texture.resource_path.is_empty():
+		return "(embedded)"
+	return texture.resource_path.get_file()
 
 
 static func _registered_texture_key(texture: Texture2D) -> String:

@@ -1,8 +1,9 @@
-Object Inspector の Extended に登録画像一覧を表示
+Object Inspector の登録画像一覧を Summary 直下に追加
 
-・Object Inspector の Extended 領域で登録画像をファイル名とサムネイル付き一覧表示できるようにした
-・Extended を ScrollContainer ベースの一覧 UI に差し替え、画像 0 件時は専用ラベルだけを表示するようにした
-・選択ノードと子孫ノードから Sprite2D.texture と AnimatedSprite2D の現在フレーム texture を収集し、同一ノード内の重複を除外する関数を追加した
-・show_empty と update_target を一覧クリアと一覧更新処理へ置き換えた
-・headless 実行で Player を対象に player_idle.png の行とサムネイル texture が生成されることを確認した
-・tools/run.ps1 でプロジェクトが起動開始することを確認した
+・Object Inspector のアニメーション表示を維持したまま Summary 直下に登録画像一覧を追加した
+・Summary 直下に固定高さの登録画像一覧 ScrollContainer と一覧親コンテナを追加した
+・登録画像一覧の更新処理を追加し サムネイル 区切り文字 長いファイル名の省略表示 0件時の なし 表示に対応した
+・Extended 領域を追加情報の文字列表示へ戻し build_extra_inspect_data の内容を表示するようにした
+・登録画像エントリ生成ヘルパーを追加し file_name と node_path を明示して返すよう整理した
+・godot_console --headless --path . --script res://runtime/verify_object_inspector.gd で Player の登録画像 1 件と Summary 登録画像一覧の高さ 88.0 を確認した
+・tools/run.ps1 を headless quit-after 1 で実行し 起動エラーなく立ち上がることを確認した
