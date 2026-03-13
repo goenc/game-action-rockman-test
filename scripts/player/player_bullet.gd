@@ -17,7 +17,6 @@ func _ready() -> void:
 	_apply_size(Vector2(8, 8))
 	body_entered.connect(_on_body_entered)
 	area_entered.connect(_on_area_entered)
-	deactivate(false)
 
 
 func configure(manager, config: Dictionary) -> void:
