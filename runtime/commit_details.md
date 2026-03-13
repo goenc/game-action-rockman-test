@@ -1,11 +1,15 @@
-日時: 2026-03-13 20:10:26 JST
-summary: Object Inspector概要欄で速度とアニメが取得表示されるように修正
-対象: debug/common/debug_inspect_utils.gd, debug/panels/object_inspector/object_inspector_panel.gd
+日時（JST）: 2026-03-13 20:33:58 JST
+対象: Player弾の独立ノード化と弾配置先の分離
+summary: Player配下の常駐弾を廃止し 発射済みの弾がPlayerに追従しないよう独立ノード化した
+変更:
+・player.tscn から Bullet 子ノードを削除し player.gd を PackedScene 生成と current_bullet 管理へ変更した
+・stage_01 に PlayerBullets ノードと配置先取得メソッドを追加し プレイヤー弾を Stage 配下へ配置するようにした
+・player_bullet.gd で消滅時に despawned を使って参照解放できるようにし 発射済み弾を個別に解放する運用へ変更した
 code_changes:
-・概要欄の速度取得を debug データ優先かつ velocity 直接参照フォールバックに変更し x,y 形式で整形
-・概要欄のアニメ取得を debug データ優先かつ AnimatedSprite2D 自身と子孫探索フォールバックに変更
-・Object Inspector の update_target で概要欄データをローカル変数に受けて反映する形に整理
+・Player は setup と reset_for_stage で弾設定を保持し set_gameplay_active(false) とステージリセット時に current_bullet を deactivate(false) して参照を null に戻すようにした
+・弾の発射位置は global_position + Vector2(facing * 18.0, -4.0) を維持し 1発制限は current_bullet の有効性で判定するようにした
+・デバッグ選択は親子構造の解消で弾を独立対象として扱える前提になったため debug 系スクリプトは未変更とした
+確認:
+・tools/run.ps1 の起動で Godot Engine v4.6.1 の立ち上がりを確認し 標準エラーが空であることを確認した
 verification:
-・player.gd で velocity 更新と sprite.play による animation 切替を確認
-・player.gd に get_debug_inspect_data が未実装であることを確認
-・godot_console --headless --path . --quit が成功しスクリプトエラーがないことを確認
+・PlayerBullets 配置先の追加と player_bullet の独立解放により 発射済み弾が Player の子として追従しない構造へ変わっていることをソース上で確認した

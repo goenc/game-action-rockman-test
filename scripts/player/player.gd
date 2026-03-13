@@ -4,6 +4,8 @@ class_name Player
 signal life_changed(current_life: int, max_life: int)
 signal defeated
 
+const PLAYER_BULLET_SCENE := preload("res://scenes/player/player_bullet.tscn")
+
 var game_manager = null
 var gameplay_active := false
 var move_speed := 120.0
@@ -14,13 +16,14 @@ var current_life := 5
 var invincible_time := 1.0
 var invincible_remaining := 0.0
 var facing := 1.0
+var bullet_config: Dictionary = {}
+var current_bullet: PlayerBullet = null
 
 @onready var collider: CollisionShape2D = $CollisionShape2D
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hurtbox: Area2D = $Hurtbox
 @onready var hurtbox_shape: CollisionShape2D = $Hurtbox/CollisionShape2D
 @onready var camera: Camera2D = $Camera2D
-@onready var bullet = $Bullet
 
 
 func _ready() -> void:
@@ -33,18 +36,19 @@ func _ready() -> void:
 
 func setup(manager, config: Dictionary) -> void:
 	game_manager = manager
+	bullet_config = config
 	_apply_config(config)
-	bullet.configure(manager, config)
 
 
 func reset_for_stage(spawn_position: Vector2, config: Dictionary) -> void:
+	bullet_config = config
 	_apply_config(config)
 	current_life = max_life
 	global_position = spawn_position
 	velocity = Vector2.ZERO
 	invincible_remaining = 0.0
 	modulate = Color.WHITE
-	bullet.deactivate(false)
+	_deactivate_current_bullet()
 	life_changed.emit(current_life, max_life)
 
 
@@ -57,7 +61,7 @@ func set_gameplay_active(active: bool) -> void:
 	camera.enabled = active
 	if !active:
 		velocity = Vector2.ZERO
-		bullet.deactivate(false)
+		_deactivate_current_bullet()
 
 
 func is_active() -> bool:
@@ -132,8 +136,22 @@ func _apply_config(config: Dictionary) -> void:
 
 
 func _try_shoot() -> void:
-	if bullet.can_fire():
-		bullet.fire(global_position + Vector2(facing * 18.0, -4.0), facing)
+	if current_bullet != null and is_instance_valid(current_bullet):
+		return
+	var bullet := PLAYER_BULLET_SCENE.instantiate() as PlayerBullet
+	if bullet == null:
+		push_error("Failed to instantiate player bullet scene.")
+		return
+	var bullet_parent := _get_bullet_parent()
+	if bullet_parent == null:
+		push_error("Failed to resolve player bullet parent.")
+		bullet.queue_free()
+		return
+	current_bullet = bullet
+	bullet.despawned.connect(_on_current_bullet_despawned.bind(bullet), CONNECT_ONE_SHOT)
+	bullet_parent.add_child(bullet)
+	bullet.configure(game_manager, bullet_config)
+	bullet.fire(global_position + Vector2(facing * 18.0, -4.0), facing)
 
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
@@ -149,3 +167,27 @@ func _apply_size(size: Vector2) -> void:
 	var hurt_shape := hurtbox_shape.shape as RectangleShape2D
 	if hurt_shape != null:
 		hurt_shape.size = size
+
+
+func _deactivate_current_bullet() -> void:
+	if current_bullet != null and is_instance_valid(current_bullet):
+		current_bullet.deactivate(false)
+	current_bullet = null
+
+
+func _get_bullet_parent() -> Node:
+	if game_manager == null or !game_manager.has_method("get_stage"):
+		return null
+	var stage = game_manager.get_stage()
+	if stage == null or !is_instance_valid(stage):
+		return null
+	if stage.has_method("get_player_bullet_parent"):
+		var bullet_parent = stage.call("get_player_bullet_parent")
+		if bullet_parent is Node and is_instance_valid(bullet_parent):
+			return bullet_parent
+	return stage
+
+
+func _on_current_bullet_despawned(bullet: PlayerBullet) -> void:
+	if current_bullet == bullet:
+		current_bullet = null

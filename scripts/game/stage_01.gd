@@ -18,6 +18,7 @@ var out_of_bounds_reported := false
 @onready var turrets_root: Node = $Enemies/Turrets
 @onready var boss = $Enemies/Boss
 @onready var enemy_bullets_root: Node = $EnemyBullets
+@onready var player_bullets_root: Node = $PlayerBullets
 
 
 func _ready() -> void:
@@ -90,6 +91,10 @@ func get_player_position() -> Vector2:
 
 func has_active_player() -> bool:
 	return player != null and player.is_active()
+
+
+func get_player_bullet_parent() -> Node:
+	return player_bullets_root if is_instance_valid(player_bullets_root) else self
 
 
 func spawn_enemy_bullet(origin: Vector2, direction: Vector2, speed: float, damage: int) -> void:

@@ -49,6 +49,8 @@ func deactivate(emit_signal: bool = true) -> void:
 	set_deferred("monitorable", false)
 	if was_active and emit_signal:
 		despawned.emit()
+	if was_active:
+		queue_free()
 
 
 func _physics_process(delta: float) -> void:

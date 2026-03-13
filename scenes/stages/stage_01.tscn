@@ -38,6 +38,8 @@ tile_set = ExtResource("2_ground_tileset")
 
 [node name="EnemyBullets" type="Node2D" parent="." unique_id=305086182]
 
+[node name="PlayerBullets" type="Node2D" parent="."]
+
 [node name="EnemyBullet01" parent="EnemyBullets" unique_id=816369283 instance=ExtResource("6_enemy_bullet_scene")]
 
 [node name="EnemyBullet02" parent="EnemyBullets" unique_id=906753158 instance=ExtResource("6_enemy_bullet_scene")]
