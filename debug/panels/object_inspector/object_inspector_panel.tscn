@@ -162,11 +162,26 @@ offset_bottom = 272.0
 theme_override_font_sizes/font_size = 11
 text = "Extended"
 
-[node name="ExtraInfoText" type="TextEdit" parent="."]
+[node name="ExtraInfoText" type="ScrollContainer" parent="."]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 274.0
 offset_right = 374.0
 offset_bottom = 390.0
-editable = false
-wrap_mode = 1
+horizontal_scroll_mode = 0
+
+[node name="Content" type="VBoxContainer" parent="ExtraInfoText"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="EmptyLabel" type="Label" parent="ExtraInfoText/Content"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "なし"
+
+[node name="ImageList" type="VBoxContainer" parent="ExtraInfoText/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6

@@ -77,11 +77,24 @@ static func build_extra_inspect_data(target: Node) -> Dictionary:
 	if !is_instance_valid(target):
 		return {}
 	var extra_data = _read_debug_inspect_data(target)
+	var normalized_data: Dictionary = {}
 	if extra_data is Dictionary:
-		return extra_data
-	if extra_data == null:
-		return {}
-	return {"value": extra_data}
+		normalized_data = (extra_data as Dictionary).duplicate(true)
+	elif extra_data != null:
+		normalized_data = {"value": extra_data}
+	var registered_images := build_registered_image_list(target)
+	if !registered_images.is_empty():
+		normalized_data["registered_image_count"] = registered_images.size()
+	return normalized_data
+
+
+static func build_registered_image_list(target: Node) -> Array[Dictionary]:
+	var image_entries: Array[Dictionary] = []
+	if !is_instance_valid(target):
+		return image_entries
+	var seen_by_node: Dictionary = {}
+	_collect_registered_image_entries(target, image_entries, seen_by_node)
+	return image_entries
 
 
 static func format_dictionary(data: Dictionary) -> String:
@@ -436,6 +449,55 @@ static func _append_formatted_lines(lines: Array[String], key: String, value, in
 			_append_formatted_lines(lines, "[%d]" % index, value[index], indent + 1)
 		return
 	lines.append("%s%s: %s" % [prefix, key, _stringify(value)])
+
+
+static func _collect_registered_image_entries(node: Node, image_entries: Array[Dictionary], seen_by_node: Dictionary) -> void:
+	_append_registered_image_entry(node, image_entries, seen_by_node)
+	for child in node.get_children():
+		if child is Node:
+			_collect_registered_image_entries(child as Node, image_entries, seen_by_node)
+
+
+static func _append_registered_image_entry(node: Node, image_entries: Array[Dictionary], seen_by_node: Dictionary) -> void:
+	if node is Sprite2D:
+		_append_registered_texture(node, node.texture, image_entries, seen_by_node)
+	elif node is AnimatedSprite2D:
+		_append_registered_texture(node, _get_current_animated_sprite_texture(node), image_entries, seen_by_node)
+
+
+static func _get_current_animated_sprite_texture(sprite: AnimatedSprite2D) -> Texture2D:
+	if sprite.sprite_frames == null or !sprite.sprite_frames.has_animation(sprite.animation):
+		return null
+	return sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame)
+
+
+static func _append_registered_texture(source_node: Node, texture: Texture2D, image_entries: Array[Dictionary], seen_by_node: Dictionary) -> void:
+	if texture == null:
+		return
+	var node_key := str(source_node.get_instance_id())
+	var existing_seen = seen_by_node.get(node_key, {})
+	var seen_textures: Dictionary = existing_seen if existing_seen is Dictionary else {}
+	var texture_key := _registered_texture_key(texture)
+	if seen_textures.has(texture_key):
+		return
+	seen_textures[texture_key] = true
+	seen_by_node[node_key] = seen_textures
+	var file_name := "(embedded)"
+	if !texture.resource_path.is_empty():
+		file_name = texture.resource_path.get_file()
+	image_entries.append({
+		"texture": texture,
+		"file_name": file_name,
+		"node_path": str(source_node.get_path()),
+	})
+
+
+static func _registered_texture_key(texture: Texture2D) -> String:
+	if texture == null:
+		return ""
+	if !texture.resource_path.is_empty():
+		return texture.resource_path
+	return str(texture.get_instance_id())
 
 
 static func _format_vector2(value: Variant) -> String:
